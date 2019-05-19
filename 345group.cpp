@@ -1,9 +1,9 @@
+#include "pch.h"
 #include <SFML/Graphics.hpp>
 #include <time.h>
 #include <iostream>
 using namespace std;
 using namespace sf;
-
 
 //horizont and vertical block size of the play field
 const int M = 20;
@@ -34,75 +34,88 @@ int figures[7][4] =
 bool checkBlocksPos()
 {
     for (int i = 0; i < 4; i++)
+    {
         if (a[i].x < 0 || a[i].x >= N || a[i].y >= M)
+        {
             return 0;
-        else if (field[a[i].y][a[i].x])
+        }
+        if (field[a[i].y][a[i].x])
+        {
             return 0;
-
+        }
+    }
     return 1;
 };
 
 void rotateBlock()
 {
-  Point p = a[1]; //center of rotation
-            for (int i = 0; i < 4; i++)
-            {
-                int x = a[i].y - p.y;
-                int y = a[i].x - p.x;
-                a[i].x = p.x - x;
-                a[i].y = p.y + y;
-            }
-            if (!checkBlocksPos())
-            {
-                for (int i = 0; i < 4; i++)
-                {
-                    a[i] = b[i];
-                }
-            }
+    Point p = a[1]; //center of rotation
+    for (int i = 0; i < 4; i++)
+    {
+        int x = a[i].y - p.y;
+        int y = a[i].x - p.x;
+        a[i].x = p.x - x;
+        a[i].y = p.y + y;
+    }
+    if (!checkBlocksPos())
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            a[i] = b[i];
+        }
+    }
 }
 
 void checkElimination()
 {
-int k = M - 1;
-        for (int i = M - 1; i > 0; i--)
+    int k = M - 1;
+    for (int i = M - 1; i > 0; i--)
+    {
+        int count = 0;
+        for (int j = 0; j < N; j++)
         {
-            int count = 0;
-            for (int j = 0; j < N; j++)
+            if (field[i][j])
             {
-                if (field[i][j])
-                {
-                    count++;
-                }
-                field[k][j] = field[i][j];
+                count++;
             }
-            if (count < N)
-            {
-                k--;
-            }
+            field[k][j] = field[i][j];
         }
+        if (count < N)
+        {
+            k--;
+        }
+    }
 }
 
-void initShape(sf::RectangleShape &shape, sf::Vector2f const &pos, sf::Color const &color)
+// init player and enemy position
+void initPlayerPos()
 {
-    shape.setFillColor(color);
-    shape.setPosition(pos);
-    shape.setOrigin(shape.getSize() * 0.5f); // The center of the rectangle
+    sf::Vector2f enemyStartPos = sf::Vector2f(150, 50);
+    sf::RectangleShape enemyRect(sf::Vector2f(50, 50));
+    shape.setFillColor(sf::Color::Red);
+    shape.setPosition(enemyStartPos);
+    shape.setOrigin(enemyRect.getSize() * 0.5f); // The center of the rectangle
+    sf::Vector2f playerStartPos = sf::Vector2f(300, 50);
+    sf::RectangleShape playerRect(sf::Vector2f(50, 50));
+    shape.setFillColor(sf::Color::Blue);
+    shape.setPosition(playerStartPos);
+    shape.setOrigin(playerRect.getSize() * 0.5f); // The center of the rectangle
 }
 
 void horizMove(int distanceX)
 {
-  for (int i = 0; i < 4; i++)
+    for (int i = 0; i < 4; i++)
+    {
+        b[i] = a[i];
+        a[i].x += distanceX;
+    }
+    if (!checkBlocksPos())
+    {
+        for (int i = 0; i < 4; i++)
         {
-            b[i] = a[i];
-            a[i].x += distanceX;
+            a[i] = b[i];
         }
-        if (!checkBlocksPos())
-        {
-            for (int i = 0; i < 4; i++)
-            {
-                a[i] = b[i];
-            }
-        }
+    }
 }
 
 int main()
@@ -110,18 +123,17 @@ int main()
     srand(time(0));
 
     //the window of the game
-    RenderWindow window(sf::VideoMode(1024, 1000), "Advanced Tetris"); 
-   
+    RenderWindow window(sf::VideoMode(1024, 1000), "Advanced Tetris");
+
     Texture t1, t2, t3;
-    t1.loadFromFile("images/ntiles.bmp");
-    t2.loadFromFile("images/background.png");
-    t3.loadFromFile("images/frame.png");
+    t1.loadFromFile("images/ntiles.png");
+    // t2.loadFromFile("images/background.png");
     Sprite s(t1), background(t2), frame(t3);
 
     //define x coordinate of blocks
-    int distanceX = 0;  
+    int distanceX = 0;
     //define if rotate or not
-    bool isRotate = 0;  
+    bool isRotate = 0;
     //define color index of image
     int colorIndex = 2;
     //difine timer
@@ -132,14 +144,14 @@ int main()
     Clock clock;
 
     window.setFramerateLimit(10);
-    
+
     /* Set the score area*/
     int score = 0, level = 1, canc = 0;
     sf::Font font;
     if (!font.loadFromFile("/usr/share/fonts/truetype/ubuntu/Ubuntu-M.ttf"))
     {
         window.setTitle("Font Error");
-    }    
+    }
     // set score title
     sf::Text scoreTitle;
     // set score text
@@ -162,7 +174,7 @@ int main()
     // set the color
     scoreTitle.setFillColor(sf::Color::Red);
     scoreTitle.setPosition(800, 50);
-    
+
     // select the font
     strScore.setFont(font);
     // set init score
@@ -172,7 +184,7 @@ int main()
     // set the color
     strScore.setFillColor(sf::Color::Red);
     strScore.setPosition(800, 100);
-   
+
     // select the font
     cancTitle.setFont(font);
     // set the cancelled titel
@@ -192,7 +204,7 @@ int main()
     // set the color
     cancScore.setFillColor(sf::Color::Red);
     cancScore.setPosition(800, 200);
-    
+
     // select the font
     levelTitle.setFont(font);
     // set the level title
@@ -203,7 +215,7 @@ int main()
     levelTitle.setFillColor(sf::Color::Red);
     levelTitle.setPosition(800, 250);
 
-     // select the font
+    // select the font
     strLevel.setFont(font);
     // set init level
     strLevel.setString("1");
@@ -213,20 +225,13 @@ int main()
     strLevel.setFillColor(sf::Color::Red);
     strLevel.setPosition(800, 300);
 
-
     /*main playing area container*/
     sf::RectangleShape container(sf::Vector2f(411, 830));
     container.setFillColor(sf::Color::White);
     container.setPosition(179, 130);
 
     /*enemy and player*/
-    sf::Vector2f enemyStartPos = sf::Vector2f(150, 50);
-    sf::RectangleShape enemyRect(sf::Vector2f(50, 50));
-    initShape(enemyRect, enemyStartPos, sf::Color::Red);
-    sf::Vector2f playerStartPos = sf::Vector2f(300, 50);
-    sf::RectangleShape playerRect(sf::Vector2f(50, 50));
-    initShape(playerRect, playerStartPos, sf::Color::Blue);
-
+    initPlayerPos();
 
     /*When the game is running*/
     while (window.isOpen())
@@ -237,6 +242,7 @@ int main()
 
         Event e;
 
+        // Event listener
         while (window.pollEvent(e))
         {
             if (e.type == Event::Closed)
@@ -244,37 +250,41 @@ int main()
                 window.close();
             }
             if (e.type == Event::KeyPressed)
+            {
                 if (e.key.code == Keyboard::Up)
                 {
                     isRotate = true;
-                }else if (e.key.code == Keyboard::Left)
-                {    distanceX = -1;
+                }
+                else if (e.key.code == Keyboard::Left)
+                {
+                    distanceX = -1;
                 }
                 else if (e.key.code == Keyboard::Right)
                 {
                     distanceX = 1;
                 }
-                else if (e.key.code == Keyboard::Down){
-                  delay = 0.05;
+                else if (e.key.code == Keyboard::Down)
+                {
+                    delay = 0.05;
                 }
                 else if (e.key.code == Keyboard::Insert)
                 {
-            /* for test only, press insert to get score,
+                    /* for test only, press insert to get score,
 				 cancellation, move player*/
-            enemyRect.move(-1, 0);
-            playerRect.move(1, 0);
-            score += 10;
-            strScore.setString(std::to_string(score));
-            canc++;
-            cancScore.setString(std::to_string(canc));
+                    enemyRect.move(-1, 0);
+                    playerRect.move(1, 0);
+                    score += 10;
+                    strScore.setString(std::to_string(score));
+                    canc++;
+                    cancScore.setString(std::to_string(canc));
                 }
+            }
         }
 
         // Enemy always moving
         enemyRect.move(1, 0);
         // Enemy got you
-        if (playerRect.getGlobalBounds()
-                .intersects(enemyRect.getGlobalBounds()))
+        if (playerRect.getGlobalBounds().intersects(enemyRect.getGlobalBounds()))
         {
             enemyRect.setPosition(enemyStartPos);
         }
@@ -346,6 +356,7 @@ int main()
         window.draw(strLevel);
 
         for (int i = 0; i < M; i++)
+        {
             for (int j = 0; j < N; j++)
             {
                 if (field[i][j] == 0)
@@ -357,7 +368,7 @@ int main()
                 s.move(180, 140); //offset, the point generate a new shape
                 window.draw(s);
             }
-
+        }
         for (int i = 0; i < 4; i++)
         {
             cc[i] = colorIndex;
@@ -389,7 +400,6 @@ int main()
                     cc[i] -= 2;
                 }
             }
-
             s.setTextureRect(IntRect(cc[i] * 40, 0, 40, 40));
             s.setPosition(a[i].x * 41, a[i].y * 41);
             s.move(180, 140); //offset,the point generate a new shape
