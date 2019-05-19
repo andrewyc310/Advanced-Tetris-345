@@ -1,4 +1,3 @@
-#include "pch.h"
 #include <SFML/Graphics.hpp>
 #include <time.h>
 #include <iostream>
@@ -29,6 +28,12 @@ int figures[7][4] =
         3, 5, 7, 6, // J
         2, 3, 4, 5, // O
 };
+
+// init player and enemy
+sf::Vector2f enemyStartPos = sf::Vector2f(150, 50);
+sf::Vector2f playerStartPos = sf::Vector2f(300, 50);
+sf::RectangleShape enemyRect(sf::Vector2f(50, 50));
+sf::RectangleShape playerRect(sf::Vector2f(50, 50));
 
 //check for boundaries and collision with other shapes
 bool checkBlocksPos()
@@ -90,16 +95,12 @@ void checkElimination()
 // init player and enemy position
 void initPlayerPos()
 {
-    sf::Vector2f enemyStartPos = sf::Vector2f(150, 50);
-    sf::RectangleShape enemyRect(sf::Vector2f(50, 50));
-    shape.setFillColor(sf::Color::Red);
-    shape.setPosition(enemyStartPos);
-    shape.setOrigin(enemyRect.getSize() * 0.5f); // The center of the rectangle
-    sf::Vector2f playerStartPos = sf::Vector2f(300, 50);
-    sf::RectangleShape playerRect(sf::Vector2f(50, 50));
-    shape.setFillColor(sf::Color::Blue);
-    shape.setPosition(playerStartPos);
-    shape.setOrigin(playerRect.getSize() * 0.5f); // The center of the rectangle
+    enemyRect.setFillColor(sf::Color::Red);
+    enemyRect.setPosition(enemyStartPos);
+    enemyRect.setOrigin(enemyRect.getSize() * 0.5f); // The center of the rectangle 
+    playerRect.setFillColor(sf::Color::Blue);
+    playerRect.setPosition(playerStartPos);
+    playerRect.setOrigin(playerRect.getSize() * 0.5f); // The center of the rectangle
 }
 
 void horizMove(int distanceX)
