@@ -1,3 +1,4 @@
+//#include "pch.h"
 #include <SFML/Graphics.hpp>
 #include <time.h>
 #include <iostream>
@@ -34,6 +35,81 @@ sf::Vector2f enemyStartPos = sf::Vector2f(150, 50);
 sf::Vector2f playerStartPos = sf::Vector2f(300, 50);
 sf::RectangleShape enemyRect(sf::Vector2f(50, 50));
 sf::RectangleShape playerRect(sf::Vector2f(50, 50));
+
+
+//the window of the game
+RenderWindow window(sf::VideoMode(1024, 1000), "Advanced Tetris");
+
+void showWelcome(sf::Font font)
+{
+    Event e;
+    sf::Text welcome;
+    // select the font
+    welcome.setFont(font);
+    // set the welcome text
+    welcome.setString("Press any key to play");
+    // set the character size
+    welcome.setCharacterSize(24);
+    // set the color
+    welcome.setFillColor(sf::Color::Red);
+    welcome.setPosition(512, 500);
+    while (window.isOpen())
+    {        
+        // Event listener
+        while (window.pollEvent(e))
+        {
+            if (e.type == Event::Closed)
+            {
+                window.close();
+                exit(0);
+            }
+            if (e.type == Event::KeyPressed)
+            {
+                return;
+            }
+        }
+        // drawing elements
+        window.clear();
+        window.draw(welcome);
+        
+        window.display();
+    }
+}
+
+void showOver(sf::Font font)
+{   Event e;
+    sf::Text gameOver;
+    // select the font
+    gameOver.setFont(font);
+    // set the game over text
+    gameOver.setString("Game Over, press 'Y' to play again.");
+    // set the character size
+    gameOver.setCharacterSize(24);
+    // set the color
+    gameOver.setFillColor(sf::Color::Red);
+    gameOver.setPosition(512, 500);
+    while (window.isOpen())
+    {
+        // Event listener
+        while (window.pollEvent(e))
+        {
+            if (e.type == Event::Closed)
+            {
+                window.close();
+                exit(0);
+            }
+            if (e.key.code == Keyboard::Y)
+            {
+                return;
+            }
+        }
+        // drawing elements
+        window.clear();
+        window.draw(gameOver);
+        
+        window.display();
+    }
+}
 
 //check for boundaries and collision with other shapes
 bool checkBlocksPos()
@@ -119,12 +195,15 @@ void horizMove(int distanceX)
     }
 }
 
-int main()
+void gameplay()
 {
     srand(time(0));
 
-    //the window of the game
-    RenderWindow window(sf::VideoMode(1024, 1000), "Advanced Tetris");
+    sf::Font font;
+    if (!font.loadFromFile("/usr/share/fonts/truetype/ubuntu/Ubuntu-M.ttf"))
+    {
+        window.setTitle("Font Error");
+    }
 
     Texture t1, t2, t3;
     t1.loadFromFile("images/ntiles.png");
@@ -148,11 +227,7 @@ int main()
 
     /* Set the score area*/
     int score = 0, level = 1, canc = 0;
-    sf::Font font;
-    if (!font.loadFromFile("/usr/share/fonts/truetype/ubuntu/Ubuntu-M.ttf"))
-    {
-        window.setTitle("Font Error");
-    }
+    
     // set score title
     sf::Text scoreTitle;
     // set score text
@@ -234,9 +309,17 @@ int main()
     /*enemy and player*/
     initPlayerPos();
 
+    bool showMain = 0;
     /*When the game is running*/
     while (window.isOpen())
     {
+        if (!showMain)
+        {
+            showWelcome(font);
+            showMain = 1;
+        }
+        
+        
         float time = clock.getElapsedTime().asSeconds();
         clock.restart();
         timer += time;
@@ -249,6 +332,7 @@ int main()
             if (e.type == Event::Closed)
             {
                 window.close();
+                exit(0);
             }
             if (e.type == Event::KeyPressed)
             {
@@ -270,7 +354,7 @@ int main()
                 }
                 else if (e.key.code == Keyboard::Insert)
                 {
-                    /* for test only, press insert to get score,
+                /* for test only, press insert to get score,
 				 cancellation, move player*/
                     enemyRect.move(-1, 0);
                     playerRect.move(1, 0);
@@ -283,12 +367,17 @@ int main()
         }
 
         // Enemy always moving
-        enemyRect.move(1, 0);
-        // Enemy got you
+        enemyRect.move(2, 0);
+
+        // Enemy got you, game over
         if (playerRect.getGlobalBounds().intersects(enemyRect.getGlobalBounds()))
         {
-            enemyRect.setPosition(enemyStartPos);
+            showOver(font);
+
+            return;
         }
+
+        // enter next level
         if (playerRect.getPosition().x >= 450)
         {
             level++;
@@ -408,6 +497,28 @@ int main()
         }
 
         window.display();
+    }
+}
+
+int main(){
+    while (1)
+    {
+        gameplay();
+        for (int i = 0; i < M; i++)
+        {
+            for (int j = 0; j < N; j++)
+            {
+                field[i][j] = 0;
+            }            
+        }
+        for (int i = 0; i < 4; i++)
+        {
+            a[i].x = 0;
+            b[i].x = 0;
+            a[i].y = 0;
+            b[i].y = 0;
+        }
+        
     }
 
     return 0;
