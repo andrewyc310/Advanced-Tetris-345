@@ -464,10 +464,14 @@ void gameplay()
             cc[i] = colorIndex;
             if (i == 0)
             {
-                if (cc[i] <= 6)
+                if (cc[i] <= 2)
                 {
-                    cc[i]++;
+                    cc[i]+=2;
                 }
+		else
+		{
+		    cc[i]--;
+		}
             }
             else if (i == 2)
             {
@@ -475,12 +479,16 @@ void gameplay()
                 {
                     cc[i]--;
                 }
+		else
+	        {
+		     cc[i]+=4;    
+		}
             }
-            else if (i == 2)
+            else if (i == 1)
             {
-                if (cc[i] <= 5)
+                if (cc[i] <= 3)
                 {
-                    cc[i] += 2;
+                    cc[i] += 3;
                 }
             }
             else if (i == 3)
@@ -489,6 +497,10 @@ void gameplay()
                 {
                     cc[i] -= 2;
                 }
+		else
+		{
+		    cc[i]+=4;	
+		}
             }
             s.setTextureRect(IntRect(cc[i] * 40, 0, 40, 40));
             s.setPosition(a[i].x * 41, a[i].y * 41);
