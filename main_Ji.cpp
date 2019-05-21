@@ -366,8 +366,8 @@ void gameplay()
             }
         }
 
-        // Enemy always moving
-        enemyRect.move(2, 0);
+        // Enemy's moving speed
+        enemyRect.move(0, 0);
 
         // Enemy got you, game over
         if (playerRect.getGlobalBounds().intersects(enemyRect.getGlobalBounds()))
