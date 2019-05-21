@@ -76,8 +76,44 @@ void showWelcome(sf::Font font)
     }
 }
 
+void showPause(sf::Font font)
+{   
+    Event e;
+    sf::Text pause;
+    // select the font
+    pause.setFont(font);
+    // set the game over text
+    pause.setString("Game pausing, press 'Y' to continue.");
+    // set the character size
+    pause.setCharacterSize(24);
+    // set the color
+    pause.setFillColor(sf::Color::Red);
+    pause.setPosition(512, 500);
+    while (window.isOpen())
+    {
+        // Event listener
+        while (window.pollEvent(e))
+        {
+            if (e.type == Event::Closed)
+            {
+                window.close();
+                exit(0);
+            }
+            if (e.key.code == Keyboard::Y)
+            {
+                return;
+            }
+        }
+        // drawing elements
+        window.clear();
+        window.draw(pause);
+        window.display();
+    }
+}
+
 void showOver(sf::Font font)
-{   Event e;
+{   
+    Event e;
     sf::Text gameOver;
     // select the font
     gameOver.setFont(font);
@@ -106,7 +142,6 @@ void showOver(sf::Font font)
         // drawing elements
         window.clear();
         window.draw(gameOver);
-        
         window.display();
     }
 }
@@ -352,6 +387,14 @@ void gameplay()
                 {
                     delay = 0.05;
                 }
+                else if (e.key.code == Keyboard::P)
+                {
+                    showPause(font);
+                }
+                else if (e.key.code == Keyboard::Escape)
+                {
+                    showPause(font);
+                }
                 else if (e.key.code == Keyboard::Insert)
                 {
                 /* for test only, press insert to get score,
@@ -373,7 +416,6 @@ void gameplay()
         if (playerRect.getGlobalBounds().intersects(enemyRect.getGlobalBounds()))
         {
             showOver(font);
-
             return;
         }
 
@@ -462,32 +504,30 @@ void gameplay()
         for (int i = 0; i < 4; i++)
         {
             cc[i] = colorIndex;
-            if (i == 0)
-            {
-                if (cc[i] <= 6)
-                {
-                    cc[i]++;
-                }
-            }
-            else if (i == 2)
-            {
-                if (cc[i] >= 2)
-                {
+            if(i==0){
+                if(cc[i]<=2){
+                    cc[i]+=2;
+                } else {
                     cc[i]--;
                 }
             }
-            else if (i == 2)
-            {
-                if (cc[i] <= 5)
-                {
-                    cc[i] += 2;
+            else if(i==2){
+                if(cc[i]>=2){
+                    cc[i]--;
+                }else{
+                    cc[i]+=4;
                 }
             }
-            else if (i == 3)
-            {
-                if (cc[i] >= 3)
-                {
-                    cc[i] -= 2;
+            else if(i==1){
+                if(cc[i]<=3){
+                    cc[i]+=3;
+                }
+            }
+            else if(i==3){
+                if(cc[i]>=3){
+                    cc[i]-=2;
+                }else{
+                    cc[i]+=4;
                 }
             }
             s.setTextureRect(IntRect(cc[i] * 40, 0, 40, 40));
