@@ -248,28 +248,33 @@ float timer=0;
 	    }
 	}
 
-	///////Tick//////
+	//Gravity movements
+	//cc[4] is the array to store 4 differ color values, then apply on each block of each tetris
 	int cc[4];
 	if (timer>delay){
 	    for (int i=0;i<4;i++) { 
-        b[i]=a[i]; 
-        a[i].y+=1; 
-      }
+		    //b[] is recording the tetris shape when it going down, and when it touched ground or other block
+		b[i]=a[i]; 
+		a[i].y+=1; 
+	      }
 
       if (!check()){
-       //for (int i=0;i<4;i++) field[b[i].y][b[i].x]=color_index;
+       //set field[b[i].y][b[i].x] to cc[i] color.
         for (int i=0;i<4;i++) {
           field[b[i].y][b[i].x]=cc[i];
         }
-        color_index=1+rand()%5;//update color index from 1 to 6
+	      //update color index from 1 to 6
+        color_index=1+rand()%5;
         
         //initialise different tetris, n ranged from 0-6
         int n=rand()%7;
+	      //for each block, set their coordinate based on their shape
         for (int i=0;i<4;i++){
             a[i].x = figures[n][i] % 2;
             a[i].y = figures[n][i] / 2;
         }
       }
+		//set timer back to 0
 	  	timer=0;
 	  }
 
