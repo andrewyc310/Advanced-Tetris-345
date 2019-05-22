@@ -10,15 +10,17 @@ const int M = 20;
 const int N = 10;
 
 //the 2d array of the playfield
+//20 * 10 size of the playfield
 int field[M][N] = {0};
 
-// the coordinate of the playfield
+//define a constructor Point
+// a[4] and b[4] hold the coordinate of each tetris (contains 4 block each tetris)
 struct Point
 {
     int x, y;
 } a[4], b[4];
 
-//define tetris shapes
+//define 7 tetris shapes
 int figures[7][4] =
     {
         1, 3, 5, 7, // I
