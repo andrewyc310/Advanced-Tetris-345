@@ -22,8 +22,8 @@ struct Point
 int figures[7][4] =
     {
         1, 3, 5, 7, // I
-        2, 4, 5, 7, // Z
-        3, 5, 4, 6, // S
+        2, 4, 5, 7, // S
+        3, 5, 4, 6, // Z
         3, 5, 4, 7, // T
         2, 3, 5, 7, // L
         3, 5, 7, 6, // J
@@ -35,7 +35,6 @@ sf::Vector2f enemyStartPos = sf::Vector2f(150, 50);
 sf::Vector2f playerStartPos = sf::Vector2f(300, 50);
 sf::RectangleShape enemyRect(sf::Vector2f(50, 50));
 sf::RectangleShape playerRect(sf::Vector2f(50, 50));
-
 
 //the window of the game
 RenderWindow window(sf::VideoMode(1024, 1000), "Advanced Tetris");
@@ -54,7 +53,7 @@ void showWelcome(sf::Font font)
     welcome.setFillColor(sf::Color::Red);
     welcome.setPosition(512, 500);
     while (window.isOpen())
-    {        
+    {
         // Event listener
         while (window.pollEvent(e))
         {
@@ -71,13 +70,13 @@ void showWelcome(sf::Font font)
         // drawing elements
         window.clear();
         window.draw(welcome);
-        
+
         window.display();
     }
 }
 
 void showPause(sf::Font font)
-{   
+{
     Event e;
     sf::Text pause;
     // select the font
@@ -112,7 +111,7 @@ void showPause(sf::Font font)
 }
 
 void showOver(sf::Font font)
-{   
+{
     Event e;
     sf::Text gameOver;
     // select the font
@@ -208,7 +207,7 @@ void initPlayerPos()
 {
     enemyRect.setFillColor(sf::Color::Red);
     enemyRect.setPosition(enemyStartPos);
-    enemyRect.setOrigin(enemyRect.getSize() * 0.5f); // The center of the rectangle 
+    enemyRect.setOrigin(enemyRect.getSize() * 0.5f); // The center of the rectangle
     playerRect.setFillColor(sf::Color::Blue);
     playerRect.setPosition(playerStartPos);
     playerRect.setOrigin(playerRect.getSize() * 0.5f); // The center of the rectangle
@@ -262,7 +261,7 @@ void gameplay()
 
     /* Set the score area*/
     int score = 0, level = 1, canc = 0;
-    
+
     // set score title
     sf::Text scoreTitle;
     // set score text
@@ -344,24 +343,27 @@ void gameplay()
     /*enemy and player*/
     initPlayerPos();
 
-    bool showMain = 0;
+    // set a flag to decide if to show welcome screen
+    bool isShowWelcome = 1;
     /*When the game is running*/
     while (window.isOpen())
     {
-        if (!showMain)
+        // show welcome screen, if is shown, set flag to 0
+        if (isShowWelcome)
         {
             showWelcome(font);
-            showMain = 1;
+            showMain = 0;
         }
-        
-        
+
         float time = clock.getElapsedTime().asSeconds();
         clock.restart();
         timer += time;
 
         Event e;
-
-        // Event listener
+        /* Event listener, set close and press key operations
+         * Press up to rotate blocks, press left/right/down to move left/right/down
+         * Press P or esc to pause the game
+         */
         while (window.pollEvent(e))
         {
             if (e.type == Event::Closed)
@@ -397,7 +399,7 @@ void gameplay()
                 }
                 else if (e.key.code == Keyboard::Insert)
                 {
-                /* for test only, press insert to get score,
+                    /* for test only, press insert to get score,
 				 cancellation, move player*/
                     enemyRect.move(-1, 0);
                     playerRect.move(1, 0);
@@ -409,7 +411,7 @@ void gameplay()
             }
         }
 
-        // Enemy's moving speed
+        // Enemy's chasing speed
         enemyRect.move(0, 0);
 
         // Enemy got you, game over
@@ -432,6 +434,7 @@ void gameplay()
         horizMove(distanceX);
 
         // block rotation
+        // can we remove the flag and move the rotateBlock() into event listener?
         if (isRotate)
         {
             rotateBlock();
@@ -504,30 +507,44 @@ void gameplay()
         for (int i = 0; i < 4; i++)
         {
             cc[i] = colorIndex;
-            if(i==0){
-                if(cc[i]<=2){
-                    cc[i]+=2;
-                } else {
+            if (i == 0)
+            {
+                if (cc[i] <= 2)
+                {
+                    cc[i] += 2;
+                }
+                else
+                {
                     cc[i]--;
                 }
             }
-            else if(i==2){
-                if(cc[i]>=2){
+            else if (i == 2)
+            {
+                if (cc[i] >= 2)
+                {
                     cc[i]--;
-                }else{
-                    cc[i]+=4;
+                }
+                else
+                {
+                    cc[i] += 4;
                 }
             }
-            else if(i==1){
-                if(cc[i]<=3){
-                    cc[i]+=3;
+            else if (i == 1)
+            {
+                if (cc[i] <= 3)
+                {
+                    cc[i] += 3;
                 }
             }
-            else if(i==3){
-                if(cc[i]>=3){
-                    cc[i]-=2;
-                }else{
-                    cc[i]+=4;
+            else if (i == 3)
+            {
+                if (cc[i] >= 3)
+                {
+                    cc[i] -= 2;
+                }
+                else
+                {
+                    cc[i] += 4;
                 }
             }
             s.setTextureRect(IntRect(cc[i] * 40, 0, 40, 40));
@@ -540,7 +557,8 @@ void gameplay()
     }
 }
 
-int main(){
+int main()
+{
     while (1)
     {
         gameplay();
@@ -549,7 +567,7 @@ int main(){
             for (int j = 0; j < N; j++)
             {
                 field[i][j] = 0;
-            }            
+            }
         }
         for (int i = 0; i < 4; i++)
         {
@@ -558,7 +576,6 @@ int main(){
             a[i].y = 0;
             b[i].y = 0;
         }
-        
     }
 
     return 0;
