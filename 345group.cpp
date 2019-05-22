@@ -9,12 +9,15 @@ using namespace sf;
 const int M = 20;//horizont Block size
 const int N = 10;//verticle block size
 
+//define a 20*10 playfield
 int field[M][N] = {0};
 
+//defind a contructor Point to store coordinates
+//a[4] and b[4] stores coordinates of each tetris which containing 4 blocks.
 struct Point
 {int x,y;} a[4], b[4];
 
-//define tetris shapes
+//define 7 tetris shapes
 int figures[7][4] =
 {
 	1,3,5,7, // I
@@ -26,11 +29,13 @@ int figures[7][4] =
 	2,3,4,5, // O
 };
 
-//check for boundaries and collision with other shapes
+//check method
 bool check()
 {
    for (int i=0;i<4;i++)
+	   //check if tetris go over the left, right, and bottom boundaries
 	  if (a[i].x<0 || a[i].x>=N || a[i].y>=M) return 0;
+	//check if tetris has collision with other tetris
       else if (field[a[i].y][a[i].x]) return 0;
 
    return 1;
@@ -48,7 +53,7 @@ int main()
 {
   srand(time(0));	 
 
-	RenderWindow window(sf::VideoMode(1024, 1000), "Advanced Tetris");//(VideoMode(320, 480), "The Game!");
+	RenderWindow window(sf::VideoMode(1024, 1000), "Advanced Tetris");
 
   Texture t1,t2,t3;
 	t1.loadFromFile("images/ntiles.png");
@@ -56,12 +61,16 @@ int main()
 	t3.loadFromFile("images/frame.png");
 	Sprite s(t1), background(t2), frame(t3);
 
-
-  int distance_x=0; //define x coordinate of blocks
-  bool is_rotate=0; //define if rotate or not
-  int color_index=2;//define color index of image
-	float timer=0;
-  float delay=0.3; //define speed for gravity
+//define x coordinate of blocks
+  int distance_x=0;
+	//define if rotate or not
+  bool is_rotate=0; 
+	//define color index of image
+  int color_index=2;
+	//define time
+float timer=0;
+	 //define speed for gravity
+  float delay=0.3;
 
 	Clock clock;
 
@@ -163,8 +172,11 @@ int main()
 
     while (window.isOpen())
     {
+	    	//to retrieve the time elapsed since the clock started, per second
 		float time = clock.getElapsedTime().asSeconds();
+	    	//restart the clock.
 		clock.restart();
+	    	//update time
 		timer+=time;
 
         Event e;
@@ -172,13 +184,16 @@ int main()
         {
             if (e.type == Event::Closed)
                 window.close();
-
+			//check if any key has been pressed
 			if (e.type == Event::KeyPressed)
+				//when up key pressed, use is_rotate to triggle the rotation method
 			  if (e.key.code==Keyboard::Up) is_rotate=true;
+				//when left key pressed, move object to the 1 distance left
 			  else if (e.key.code==Keyboard::Left) distance_x=-1;
+				//when right key pressed, move object to the 1 distance right
 			  else if (e.key.code==Keyboard::Right) distance_x=1;
 		}
-
+	//if down key pressed, accelerate the gravity
 	if (Keyboard::isKeyPressed(Keyboard::Down)) delay=0.05;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Insert)) {
 			/* for test only, press insert to get score,
@@ -215,20 +230,22 @@ int main()
     }
   }
 
-	//totation
+	//rotation
 	if (is_rotate){
-		Point p = a[1]; //center of rotation
+		//center of rotation
+		Point p = a[1]; 
+		//do the rotation
 		for (int i=0;i<4;i++){
 			int x = a[i].y-p.y;
 			int y = a[i].x-p.x;
 			a[i].x = p.x - x;
 			a[i].y = p.y + y;
-	 	}
-   	if (!check()) {
-      for (int i=0;i<4;i++) {
-        a[i]=b[i];
-      }
-    }
+			}
+		if (!check()) {
+	      for (int i=0;i<4;i++) {
+		a[i]=b[i];
+	      }
+	    }
 	}
 
 	///////Tick//////
