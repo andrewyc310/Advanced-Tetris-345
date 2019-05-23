@@ -197,7 +197,7 @@ void rotateBlock()
 	else
 	{
 		//center of rotation
-		Point p = a[1]; 
+		p = a[1]; 
 		for (int i = 0; i < 4; i++)
 		{
 			//do the rotation
