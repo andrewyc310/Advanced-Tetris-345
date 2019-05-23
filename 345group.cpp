@@ -6,8 +6,11 @@ using namespace std;
 using namespace sf;
 
 
-const int M = 20;//horizont Block size
-const int N = 10;//verticle block size
+
+//horizont Block size
+const int M = 20;
+//verticle block size
+const int N = 10;
 
 //define a 20*10 playfield
 int field[M][N] = {0};
@@ -20,22 +23,29 @@ struct Point
 //define 7 tetris shapes
 int figures[7][4] =
 {
-	1,3,5,7, // I
-	2,4,5,7, // Z
-	3,5,4,6, // S
-	3,5,4,7, // T
-	2,3,5,7, // L
-	3,5,7,6, // J
-	2,3,4,5, // O
+  // I
+  1,3,5,7,
+  // Z 
+  2,4,5,7, 
+  // S
+  3,5,4,6, 
+  // T
+  3,5,4,7, 
+  // L
+  2,3,5,7, 
+  // J
+  3,5,7,6,
+   // O 
+	2,3,4,5,
 };
 
-//check method
+//check for boundaries and collision with other shapes
 bool check()
 {
    for (int i=0;i<4;i++)
-	   //check if tetris go over the left, right, and bottom boundaries
-	  if (a[i].x<0 || a[i].x>=N || a[i].y>=M) return 0;
-	//check if tetris has collision with other tetris
+   //check if tetris go over the left, right, and bottom boundaries
+    if (a[i].x<0 || a[i].x>=N || a[i].y>=M    ) return 0;
+      //check if tetris has collision with other tetris
       else if (field[a[i].y][a[i].x]) return 0;
 
    return 1;
@@ -43,8 +53,9 @@ bool check()
 
 void initShape(sf::RectangleShape &shape, sf::Vector2f const &pos, sf::Color const &color) {
 	shape.setFillColor(color);
-	shape.setPosition(pos);
-	shape.setOrigin(shape.getSize() * 0.5f); // The center of the rectangle
+  shape.setPosition(pos);
+  // The center of the rectangle
+	shape.setOrigin(shape.getSize() * 0.5f); 
 }
 
 
@@ -55,22 +66,23 @@ int main()
 
 	RenderWindow window(sf::VideoMode(1024, 1000), "Advanced Tetris");
 
-  Texture t1,t2,t3;
+  Texture t1;
 	t1.loadFromFile("images/ntiles.png");
-	t2.loadFromFile("images/background.png");
-	t3.loadFromFile("images/frame.png");
-	Sprite s(t1), background(t2), frame(t3);
 
-//define x coordinate of blocks
+	Sprite s(t1);
+
+
+  //define x coordinate of blocks
   int distance_x=0;
-	//define if rotate or not
+  //define if rotate or not
   bool is_rotate=0; 
-	//define color index of image
+  //define color index of image
   int color_index=2;
-	//define time
-float timer=0;
-	 //define speed for gravity
+  //define time
+  float timer=0;
+  //define speed for gravity
   float delay=0.3;
+
 
 	Clock clock;
 
@@ -172,32 +184,35 @@ float timer=0;
 
     while (window.isOpen())
     {
-	    	//to retrieve the time elapsed since the clock started, per second
-		float time = clock.getElapsedTime().asSeconds();
-	    	//restart the clock.
-		clock.restart();
-	    	//update time
-		timer+=time;
+      //to retrieve the time elapsed since the clock started, per second
+      float time = clock.getElapsedTime().asSeconds();
+      //restart the clock.
+      clock.restart();
+      //update time
+      timer+=time;
 
         Event e;
         while (window.pollEvent(e))
         {
             if (e.type == Event::Closed)
                 window.close();
-			//check if any key has been pressed
-			if (e.type == Event::KeyPressed)
-				//when up key pressed, use is_rotate to triggle the rotation method
-			  if (e.key.code==Keyboard::Up) is_rotate=true;
-				//when left key pressed, move object to the 1 distance left
-			  else if (e.key.code==Keyboard::Left) distance_x=-1;
-				//when right key pressed, move object to the 1 distance right
+      //check if any key has been pressed
+      if (e.type == Event::KeyPressed)
+        //when up key pressed, use is_rotate to triggle the rotation method
+        if (e.key.code==Keyboard::Up) is_rotate=true;
+        //when left key pressed, move object to the 1 distance left
+        else if (e.key.code==Keyboard::Left) distance_x=-1;
+        //when right key pressed, move object to the 1 distance right
 			  else if (e.key.code==Keyboard::Right) distance_x=1;
-		}
-	//if down key pressed, accelerate the gravity
-	if (Keyboard::isKeyPressed(Keyboard::Down)) delay=0.05;
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Insert)) {
-			/* for test only, press insert to get score,
-				 cancellation, move player*/
+    }
+    
+    //if down key pressed, accelerate the gravity
+	  if (Keyboard::isKeyPressed(Keyboard::Down)) {
+      delay=0.05;
+    }
+
+	  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Insert)) {
+			// for test only, press insert to get score, cancellation, move player
             enemyRect.move(-1, 0);
             playerRect.move(1,0);
             score += 10;
@@ -232,49 +247,69 @@ float timer=0;
 
 	//rotation
 	if (is_rotate){
-		//center of rotation
-		Point p = a[1]; 
-		//do the rotation
-		for (int i=0;i<4;i++){
-			int x = a[i].y-p.y;
-			int y = a[i].x-p.x;
-			a[i].x = p.x - x;
-			a[i].y = p.y + y;
-			}
-		if (!check()) {
-	      for (int i=0;i<4;i++) {
-		a[i]=b[i];
-	      }
-	    }
-	}
+    //center of rotation
+    Point p;
+    //if the tetris shape is a O
+    if(a[0].x==a[1].x && a[0].y==a[2].y && a[2].x==a[3].x){
+      //do the rotation
+      Point a0 = a[0];
+      Point a1 = a[1]; 
+      Point a2 = a[2];
+      Point a3 = a[3];
 
-	//Gravity movements
-	//cc[4] is the array to store 4 differ color values, then apply on each block of each tetris
+      a[0] = a1;
+      a[1] = a3;
+      a[2] = a0;
+      a[3] = a2;
+    //for other shapes  
+    }else{
+		  p = a[1]; //center of rotation
+      for (int i=0;i<4;i++){
+        //do the rotation
+        int x = a[i].y-p.y;
+        int y = a[i].x-p.x;
+        a[i].x = p.x - x;
+        a[i].y = p.y + y;
+      
+      }
+    }
+		
+   	if (!check()) {
+      for (int i=0;i<4;i++) {
+        a[i]=b[i];
+      }
+    }
+	}
+ 
+  //Gravity movements
+  //cc[4] is the array to store 4 differ color values, then apply on each block of each tetris
 	int cc[4];
 	if (timer>delay){
 	    for (int i=0;i<4;i++) { 
-		    //b[] is recording the tetris shape when it going down, and when it touched ground or other block
-		b[i]=a[i]; 
-		a[i].y+=1; 
-	      }
+        //b[] is recording the tetris shape when it going down, and when it touched ground or other block
+        b[i]=a[i]; 
+        a[i].y+=1; 
+      }
 
       if (!check()){
-       //set field[b[i].y][b[i].x] to cc[i] color.
+        //set field[b[i].y][b[i].x] to cc[i] color.
         for (int i=0;i<4;i++) {
           field[b[i].y][b[i].x]=cc[i];
         }
-	      //update color index from 1 to 6
+        //update color index from 1 to 6
         color_index=1+rand()%5;
         
         //initialise different tetris, n ranged from 0-6
         int n=rand()%7;
-	      //for each block, set their coordinate based on their shape
+        
+        //for each block, set their coordinate based on their shape
         for (int i=0;i<4;i++){
             a[i].x = figures[n][i] % 2;
             a[i].y = figures[n][i] / 2;
         }
+        
       }
-		//set timer back to 0
+      //set timer back to 0
 	  	timer=0;
 	  }
 
@@ -298,9 +333,7 @@ float timer=0;
   delay=0.3;
 
   //drawing elements
-  //window.clear(Color::White);	
 	window.clear();
-  //window.draw(background);
 	window.draw(playerRect);
   window.draw(enemyRect);
   window.draw(container);
@@ -318,47 +351,54 @@ float timer=0;
            continue;
          }
 		 s.setTextureRect(IntRect(field[i][j]*100,40,40,40));
-		 s.setPosition(j*41,i*41);
-		 s.move(180, 140); //offset, the point generate a new shape
+     s.setPosition(j*41,i*41);
+     // the top left point generate a new shape
+     s.move(180, 140); 
+     //draw the sprite
 		 window.draw(s);
 	   }
 
 	for (int i=0;i<4;i++)
 	  {
-        cc[i] = color_index;
-          if(i==0){
-            if(cc[i]<=2){
-              cc[i]+=2;
-            }else{
-              cc[i]--;
-            }
-          }else if(i==2){
-            if(cc[i]>=2){
-              cc[i]--;
-            }else{
-              cc[i]+=4;
-            }
-          }else if(i==1){
-            if(cc[i]<=3){
-            cc[i]+=3;
-            }
-          }else if(i==3){
-            if(cc[i]>=3){
-            cc[i]-=2;
-            }else{
-              cc[i]+=4;
-            }
+      //for each block, regenerate the color 
+      cc[i] = color_index;
+        if(i==0){
+          if(cc[i]<=2){
+            cc[i]+=2;
+          }else{
+            cc[i]--;
           }
+        }else if(i==2){
+          if(cc[i]>=2){
+            cc[i]--;
+          }else{
+            cc[i]+=4;
+          }
+        }else if(i==1){
+          if(cc[i]<=3){
+          cc[i]+=3;
+          }
+        }else if(i==3){
+          if(cc[i]>=3){
+          cc[i]-=2;
+          }else{
+            cc[i]+=4;
+          }
+        }
 		
     s.setTextureRect(IntRect(cc[i]*100,40,40,40));
-		s.setPosition(a[i].x*41,a[i].y*41);
-		s.move(180,140); //offset,the point generate a new shape
+    s.setPosition(a[i].x*41,a[i].y*41);
+    //the top left point generate a new shape
+    s.move(180,140); 
+    //draw the sprite
 		window.draw(s);
 	  }
 
-	//window.draw(frame);
+	
  	window.display();
 	}
 
     return 0;
 }
+
+
