@@ -1,7 +1,10 @@
+// changes in line 17  285 296  508
+
 #include <SFML/Graphics.hpp>
 #include <time.h>
 #include <iostream>
 #include <set>
+
 using namespace std;
 using namespace sf;
 
@@ -11,11 +14,12 @@ const int N = 10;
 
 //the 2d array of the playfield
 int field[M][N] = {0};
+int tscore;
 
 // the coordinate of the playfield
 struct Point
 {
-    int x, y, r, b;
+    int x, y;
 } a[4], b[4];
 
 //define tetris shapes
@@ -198,7 +202,10 @@ void FullLine()
                 bHaveEmpty = true;
             }
         }
-        if(bHaveEmpty) j--;
+        if(bHaveEmpty)
+        {
+            j--;
+        }
     }
 }
 
@@ -211,7 +218,10 @@ int AdjacentCount(int nValue, int nRow, int nCol, set<int>& sLst, bool bElm = fa
         std::pair<std::set<int>::iterator,bool> ret = sLst.insert((nRow - 1) * 100 + nCol);
         if (ret.second)
         {
-            if(bElm) field[nRow - 1][nCol] = 0;
+            if(bElm)
+            {
+                field[nRow - 1][nCol] = 0;
+            }
             AdjacentCount(nValue, nRow - 1, nCol, sLst, bElm);
         }
     }
@@ -220,7 +230,10 @@ int AdjacentCount(int nValue, int nRow, int nCol, set<int>& sLst, bool bElm = fa
         std::pair<std::set<int>::iterator,bool> ret = sLst.insert((nRow + 1) * 100 + nCol);
         if (ret.second)
         {
-            if(bElm) field[nRow + 1][nCol] = 0;
+            if(bElm)
+            {
+                field[nRow + 1][nCol] = 0;
+            }
             AdjacentCount(nValue, nRow + 1, nCol, sLst, bElm);
         }
     }
@@ -229,7 +242,10 @@ int AdjacentCount(int nValue, int nRow, int nCol, set<int>& sLst, bool bElm = fa
         std::pair<std::set<int>::iterator,bool> ret = sLst.insert(nRow * 100 + nCol - 1);
         if (ret.second)
         {
-            if(bElm) field[nRow][nCol - 1] = 0;
+            if(bElm)
+            {
+                field[nRow][nCol - 1] = 0;
+            }
             AdjacentCount(nValue, nRow, nCol - 1, sLst, bElm);
         }
     }
@@ -238,7 +254,10 @@ int AdjacentCount(int nValue, int nRow, int nCol, set<int>& sLst, bool bElm = fa
         std::pair<std::set<int>::iterator,bool> ret = sLst.insert(nRow * 100 + nCol + 1);
         if (ret.second)
         {
-            if(bElm) field[nRow][nCol + 1] = 0;
+            if(bElm)
+            {
+                field[nRow][nCol + 1] = 0;
+            }
             AdjacentCount(nValue, nRow, nCol + 1, sLst, bElm);
         }
     }
@@ -248,16 +267,22 @@ int AdjacentCount(int nValue, int nRow, int nCol, set<int>& sLst, bool bElm = fa
 //Finding block with same color in adjacent cells
 int AdjacentCount2(int nRow, int nCol, bool bElm = false)
 {
-    if(0 == field[nRow][nCol]) return 0;
+    if(0 == field[nRow][nCol])
+    {
+        return 0;
+    }
     set<int> sLst;
     sLst.insert(nRow * 100 + nCol);
     int nValue = field[nRow][nCol];
-    if(bElm) field[nRow][nCol] = 0;
+    if(bElm)
+    {
+        field[nRow][nCol] = 0;
+    }
     return AdjacentCount(nValue, nRow, nCol, sLst, bElm);
 }
 
 //Clear block when condition is reached
-int checkElimination()
+void checkElimination()
 {
     int nAdNum;
     for (int i = M - 1; i > 0; i--)
@@ -268,6 +293,7 @@ int checkElimination()
             nAdNum = AdjacentCount2(i, j);
             if (nAdNum > 3)
             {
+                tscore = nAdNum;
                 AdjacentCount2(i, j, true);
                 FullLine();
             }
@@ -277,7 +303,6 @@ int checkElimination()
             i++;
         }
     }
-    return nAdNum;
 }
 
 // init player and enemy position
@@ -312,13 +337,13 @@ void gameplay()
     srand(time(0));
     
     sf::Font font;
-    if (!font.loadFromFile(resourcePath()+"simplistic_regular.ttf"))
+    if (!font.loadFromFile("/usr/share/fonts/truetype/ubuntu/Ubuntu-M.ttf")) {
     {
         window.setTitle("Font Error");
     }
     
     Texture t1, t2, t3;
-    t1.loadFromFile(resourcePath()+"ntiles.png");
+    t1.loadFromFile("images/ntiles.png");
     // t2.loadFromFile("images/background.png");
     Sprite s(t1), background(t2), frame(t3);
     
@@ -474,13 +499,13 @@ void gameplay()
                 {
                     showPause(font);
                 }
-                else if (e.key.code == Keyboard::Insert)
+                else if (e.key.code == Keyboard::O)
                 {
                     /* for test only, press insert to get score,
                      cancellation, move player*/
                     enemyRect.move(-1, 0);
                     playerRect.move(1, 0);
-                    score += 10;
+                    score += tscore;
                     strScore.setString(std::to_string(score));
                     canc++;
                     cancScore.setString(std::to_string(canc));
@@ -664,9 +689,7 @@ int main(){
             a[i].y = 0;
             b[i].y = 0;
         }
-        
     }
     
     return 0;
 }
-
