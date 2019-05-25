@@ -390,7 +390,7 @@ void gameplay()
     srand(time(0));
 
     sf::Font font;
-    if (!font.loadFromFile("font/arial.ttf"))
+    if (!font.loadFromFile("fonts/arial.ttf"))
     {
         window.setTitle("Font Error");
     }
