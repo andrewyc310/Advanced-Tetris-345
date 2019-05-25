@@ -390,7 +390,7 @@ void gameplay()
     srand(time(0));
 
     sf::Font font;
-    if (!font.loadFromFile("/usr/share/fonts/truetype/ubuntu/Ubuntu-M.ttf"))
+    if (!font.loadFromFile("font/arial.ttf"))
     {
         window.setTitle("Font Error");
     }
