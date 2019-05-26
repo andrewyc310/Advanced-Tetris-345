@@ -2,46 +2,6 @@
 #include <time.h>
 #include <iostream>
 #include <set>
-#include <unistd.h>
-#include "ResourcePath.hpp"
-
-using namespace std;
-using namespace sf;
-
-//horizont and vertical block size of the play field
-const int M = 20;
-const int N = 10;
-
-//the 2d array of the playfield
-int field[M][N] = {0};
-int tscore;
-
-// the coordinate of the playfield
-struct Point
-{
-    int x, y;
-} a[4], b[4];Skip to content
-
-Search or jump to…
-
-Pull requests
-Issues
-Marketplace
-Explore
-
-@andrewyc310
-0
-0 1 andrewyc310/Advanced-Tetris-345
-Code  Issues 0  Pull requests 0  Projects 0  Wiki  Security  Insights  Settings
-Advanced-Tetris-345/main.cpp
-@mahebei mahebei Update main.cpp
-a9fbd4c 22 hours ago
-805 lines (747 sloc)  19.6 KB
-
-#include <SFML/Graphics.hpp>
-#include <time.h>
-#include <iostream>
-#include <set>
 using namespace std;
 using namespace sf;
 
