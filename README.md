@@ -8,3 +8,6 @@ g++ main.o -o game -LSFML/lib -lsfml-graphics -lsfml-window -lsfml-system
 
 
 export LD_LIBRARY_PATH=SFML/lib && ./game
+
+To run the program in Xcode, extract AdvancedTetrisAlpha.zip and open Advanced Tetris Alpha.xcodeproj. Then click run in Xcode.
+
