@@ -1,3 +1,9 @@
+/**
+ * The Advanced Tetris Project.
+ * @date May 2019.
+ * @author Ji Liu, Andrew Wang, Bella Gao
+ */
+
 #include <SFML/Graphics.hpp>
 #include <time.h>
 #include <iostream>
@@ -27,14 +33,14 @@ struct Point
 
 /** Define 7 tetris shapes.*/
 int figures[7][4] =
-{
-    1, 3, 5, 7, // I
-    2, 4, 5, 7, // Z
-    3, 5, 4, 6, // S
-    3, 5, 4, 7, // T
-    2, 3, 5, 7, // L
-    3, 5, 7, 6, // J
-    2, 3, 4, 5, // O
+    {
+        1, 3, 5, 7, // I
+        2, 4, 5, 7, // Z
+        3, 5, 4, 6, // S
+        3, 5, 4, 7, // T
+        2, 3, 5, 7, // L
+        3, 5, 7, 6, // J
+        2, 3, 4, 5, // O
 };
 
 /** Init player's and enemy's shape and start pos.*/
@@ -81,7 +87,7 @@ void showWelcome(sf::Font font)
         // drawing elements
         window.clear();
         window.draw(welcome);
-        
+
         window.display();
     }
 }
@@ -200,7 +206,7 @@ void rotateBlock()
         Point a1 = a[1];
         Point a2 = a[2];
         Point a3 = a[3];
-        
+
         a[0] = a1;
         a[1] = a3;
         a[2] = a0;
@@ -405,17 +411,17 @@ void horizMove(int distanceX)
 void gameplay()
 {
     srand(time(0));
-    
+
     sf::Font font;
     if (!font.loadFromFile("fonts/arial.ttf"))
     {
         window.setTitle("Font Error");
     }
-    
+
     Texture t1;
     t1.loadFromFile("images/ntiles.png");
     Sprite s(t1);
-    
+
     //define x coordinate of blocks
     int distanceX = 0;
     //define if rotate or not
@@ -426,14 +432,14 @@ void gameplay()
     float timer = 0;
     //define speed for gravity
     float delay = 0.5;
-    
+
     Clock clock;
-    
+
     window.setFramerateLimit(10);
-    
+
     /* Set the score area*/
     int score = 0, level = 1, canc = 0;
-    
+
     // set score title
     sf::Text scoreTitle;
     // select the font
@@ -446,7 +452,7 @@ void gameplay()
     scoreTitle.setFillColor(sf::Color::Red);
     // set the pos
     scoreTitle.setPosition(700, 50);
-    
+
     // set score text
     sf::Text strScore;
     // select the font
@@ -459,7 +465,7 @@ void gameplay()
     strScore.setFillColor(sf::Color::Red);
     // set the pos
     strScore.setPosition(700, 100);
-    
+
     // set cancelled title
     sf::Text cancTitle;
     // select the font
@@ -472,7 +478,7 @@ void gameplay()
     cancTitle.setFillColor(sf::Color::Red);
     // set the pos
     cancTitle.setPosition(700, 150);
-    
+
     // set cancelled text
     sf::Text cancScore;
     // select the font
@@ -485,7 +491,7 @@ void gameplay()
     cancScore.setFillColor(sf::Color::Red);
     // set the pos
     cancScore.setPosition(700, 200);
-    
+
     // set level title
     sf::Text levelTitle;
     // select the font
@@ -498,7 +504,7 @@ void gameplay()
     levelTitle.setFillColor(sf::Color::Red);
     // set the pos
     levelTitle.setPosition(700, 250);
-    
+
     // set level text
     sf::Text strLevel;
     // select the font
@@ -511,7 +517,7 @@ void gameplay()
     strLevel.setFillColor(sf::Color::Red);
     // set the pos
     strLevel.setPosition(700, 300);
-    
+
     // set help text
     sf::Text helpText;
     // select the font
@@ -524,7 +530,7 @@ void gameplay()
     helpText.setFillColor(sf::Color::Red);
     // set the pos
     helpText.setPosition(700, 350);
-    
+
     // set test message, for test only
     sf::Text testMsg;
     // select the font
@@ -537,12 +543,12 @@ void gameplay()
     testMsg.setFillColor(sf::Color::Red);
     // set the pos
     testMsg.setPosition(700, 650);
-    
+
     /*main playing area container*/
     sf::RectangleShape container(sf::Vector2f(411, 830));
     container.setFillColor(sf::Color::White);
     container.setPosition(179, 130);
-    
+
     /*enemy and player*/
     initPlayerPos();
     // set a flag to decide if to show welcome screen
@@ -557,18 +563,18 @@ void gameplay()
             showWelcome(font);
             isShowWelcome = 0;
         }
-        
+
         //to retrieve the time elapsed since the clock started, per second
         float time = clock.getElapsedTime().asSeconds();
-        
+
         //restart the clock.
         clock.restart();
-        
+
         //update time
         timer += time;
-        
+
         Event e;
-        
+
         /* Event listener, set close and press key operations
          * Press up to rotate blocks, press left/right/down to move left/right/down
          * Press P or esc to pause the game
@@ -625,17 +631,17 @@ void gameplay()
                 }
             }
         }
-        
+
         // Enemy's chasing speed
         enemyRect.move(0.2, 0);
-        
+
         // Enemy got you, game over
         if (playerRect.getGlobalBounds().intersects(enemyRect.getGlobalBounds()))
         {
             showOver(font);
             return;
         }
-        
+
         // enter next level
         if (playerRect.getPosition().x >= 550)
         {
@@ -644,10 +650,10 @@ void gameplay()
             enemyRect.setPosition(enemyStartPos);
             playerRect.setPosition(playerStartPos);
         }
-        
+
         //left and right movement
         horizMove(distanceX);
-        
+
         //Gravity movements
         if (timer > delay)
         {
@@ -656,7 +662,7 @@ void gameplay()
                 b[i] = a[i];
                 a[i].y += 1;
             }
-            
+
             if (!checkBlocksPos())
             {
                 //for (int i=0;i<4;i++) field[b[i].y][b[i].x]=colorIndex;
@@ -668,7 +674,7 @@ void gameplay()
                 fullLine();
                 colorIndex = 1 + rand() % 6; //update color index from 1 to 6
                 //colorIndex = rand() % 7; //update color index from 1 to 6
-                
+
                 //initialise different tetris, n ranged from 0-6
                 nType = rand() % 7;
                 for (int i = 0; i < 4; i++)
@@ -679,7 +685,7 @@ void gameplay()
             }
             timer = 0;
         }
-        
+
         // block elimination, player move and scores update
         checkElimination();
         playerRect.move(tscore * tscore / 2, 0);
@@ -692,7 +698,7 @@ void gameplay()
         distanceX = 0;
         isRotate = 0;
         delay = 0.5;
-        
+
         // drawing elements
         window.clear();
         window.draw(playerRect);
@@ -706,7 +712,7 @@ void gameplay()
         window.draw(strLevel);
         window.draw(helpText);
         window.draw(testMsg);
-        
+
         for (int i = 0; i < M; i++)
         {
             for (int j = 0; j < N; j++)
@@ -723,60 +729,60 @@ void gameplay()
                 window.draw(s);
             }
         }
-        
+
         //for each block, regenerate the color
         switch (nType)
         {
-            case 0: //line
-                cc[0] = 4;
-                cc[1] = 4;
-                cc[2] = 3;
-                cc[3] = 3;
-                break;
-            case 1: //S
-                cc[0] = 4;
-                cc[1] = 5;
-                cc[2] = 4;
-                cc[3] = 5;
-                break;
-            case 2: //Z
-                cc[0] = 4;
-                cc[1] = 5;
-                cc[2] = 4;
-                cc[3] = 5;
-                break;
-            case 3: //T
-                cc[0] = 5;
-                cc[1] = 3;
-                cc[2] = 5;
-                cc[3] = 3;
-                break;
-            case 4: //L
-                cc[0] = 4;
-                cc[1] = 4;
-                cc[2] = 3;
-                cc[3] = 3;
-                break;
-            case 5: //J
-                cc[0] = 5;
-                cc[1] = 5;
-                cc[2] = 4;
-                cc[3] = 4;
-                break;
-            case 6: //O
-                cc[0] = 5;
-                cc[1] = 3;
-                cc[2] = 3;
-                cc[3] = 5;
-                break;
-            default:
-                cc[0] = colorIndex;
-                cc[1] = colorIndex;
-                cc[2] = colorIndex;
-                cc[3] = colorIndex;
-                break;
+        case 0: //line
+            cc[0] = 4;
+            cc[1] = 4;
+            cc[2] = 3;
+            cc[3] = 3;
+            break;
+        case 1: //S
+            cc[0] = 4;
+            cc[1] = 5;
+            cc[2] = 4;
+            cc[3] = 5;
+            break;
+        case 2: //Z
+            cc[0] = 4;
+            cc[1] = 5;
+            cc[2] = 4;
+            cc[3] = 5;
+            break;
+        case 3: //T
+            cc[0] = 5;
+            cc[1] = 3;
+            cc[2] = 5;
+            cc[3] = 3;
+            break;
+        case 4: //L
+            cc[0] = 4;
+            cc[1] = 4;
+            cc[2] = 3;
+            cc[3] = 3;
+            break;
+        case 5: //J
+            cc[0] = 5;
+            cc[1] = 5;
+            cc[2] = 4;
+            cc[3] = 4;
+            break;
+        case 6: //O
+            cc[0] = 5;
+            cc[1] = 3;
+            cc[2] = 3;
+            cc[3] = 5;
+            break;
+        default:
+            cc[0] = colorIndex;
+            cc[1] = colorIndex;
+            cc[2] = colorIndex;
+            cc[3] = colorIndex;
+            break;
         }
-        
+
         for (int i = 0; i < 4; i++)
         {
             s.setTextureRect(IntRect(cc[i] * 40, 0, 40, 40));
@@ -786,7 +792,7 @@ void gameplay()
             // draw the sprite
             window.draw(s);
         }
-        
+
         window.display();
     }
 }
@@ -816,6 +822,6 @@ int main()
             b[i].y = 0;
         }
     }
-    
+
     return 0;
 }
