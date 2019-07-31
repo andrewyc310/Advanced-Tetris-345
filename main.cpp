@@ -29,7 +29,11 @@ int tscore = 0;
 struct Point
 {
     int x, y;
-} a[4], b[4];
+};
+/** initial bloack shape BELLA*/
+Point a[4] = { {0,1}, {0,2}, {1,2}, {1,3} };
+Point b[4];
+
 
 /** Define 7 tetris shapes.*/
 int figures[7][4] =
@@ -179,7 +183,8 @@ bool checkBlocksPos()
 {
     for (int i = 0; i < 4; i++)
     {
-        if (a[i].x < 0 || a[i].x >= N || a[i].y >= M)
+        //if (a[i].x < 0 || a[i].x >= N || a[i].y >= M) BELLA
+        if (a[i].x < -4 || a[i].x >= 6 || a[i].y >= M)
         {
             return 0;
         }
@@ -427,7 +432,10 @@ void gameplay()
     //define if rotate or not
     bool isRotate = 0;
     //define color index of image
-    int colorIndex = 2;
+    int colorIndex_0 = 2;
+    int colorIndex_1 = 3;
+    int colorIndex_2 = 4;
+    int colorIndex_3 = 1;
     //difine timer
     float timer = 0;
     //define speed for gravity
@@ -665,15 +673,15 @@ void gameplay()
 
             if (!checkBlocksPos())
             {
-                //for (int i=0;i<4;i++) field[b[i].y][b[i].x]=colorIndex;
                 for (int i = 0; i < 4; i++)
                 {
                     field[b[i].y][b[i].x] = cc[i];
-                    //field[b[i].y][b[i].x]=colorIndex;
                 }
                 fullLine();
-                colorIndex = 1 + rand() % 6; //update color index from 1 to 6
-                //colorIndex = rand() % 7; //update color index from 1 to 6
+                colorIndex_0 = 1 + rand() % 6; //update color index for first block
+                colorIndex_1 = 1 + rand() % 6; //update color index for second block
+                colorIndex_2 = 1 + rand() % 6; //update color index for 3rd block
+                colorIndex_3 = 1 + rand() % 6; //update color index for 4th block
 
                 //initialise different tetris, n ranged from 0-6
                 nType = rand() % 7;
@@ -721,8 +729,9 @@ void gameplay()
                 {
                     continue;
                 }
-                s.setTextureRect(IntRect(field[i][j] * 40, 0, 40, 40));
-                s.setPosition(j * 41, i * 41);
+                //s.setTextureRect(IntRect(field[i][j] * 40, 0, 40, 40)); BELLA
+                s.setTextureRect(IntRect(field[i][j] * 100, 40, 40, 40//初始位置改这里BELLA
+                s.setPosition(164 + j * 41, i * 41);//初始位置改这里BELLA
                 // the top left point generate a new shape
                 s.move(180, 140);
                 // draw the sprite
@@ -731,7 +740,7 @@ void gameplay()
         }
 
         //for each block, regenerate the color
-        switch (nType)
+/**        switch (nType)
         {
         case 0: //line
             cc[0] = 4;
@@ -781,12 +790,29 @@ void gameplay()
             cc[2] = colorIndex;
             cc[3] = colorIndex;
             break;
-        }
+        }BELLA*/
 
         for (int i = 0; i < 4; i++)
         {
-            s.setTextureRect(IntRect(cc[i] * 40, 0, 40, 40));
-            s.setPosition(a[i].x * 41, a[i].y * 41);
+             if(i==0)
+             {
+                cc[i] = colorIndex_0;
+             }
+             else if(i==1)
+             {
+                    cc[i] = col1rIndex_1;
+             }
+             else if(i==2)
+             {
+                    cc[i] = colorIndex_2;
+             }
+             else if(i==3)
+             {
+                    cc[i] = colorIndex_3;
+             }
+            //s.setTextureRect(IntRect(cc[i] * 40, 0, 40, 40));
+            s.setTextureRect(IntRect(cc[i] * 100, 40, 40, 40)); //初始位置改这里BELLA
+            s.setPosition(164 + a[i].x * 41, a[i].y * 41);//位置位置改这里BELLA
             //the top left point generate a new shape
             s.move(180, 140);
             // draw the sprite
