@@ -8,6 +8,8 @@
 #include <time.h>
 #include <iostream>
 #include <set>
+#include <ResourcePath.hpp>
+
 using namespace std;
 using namespace sf;
 
@@ -18,18 +20,6 @@ const int N = 10;
 
 /** The 2d array of the playfield，20 * 10.*/
 int field[M][N] = {0};
-
-/** Define 7 tetris shapes.*/
-int figures[7][4] =
-    {
-        1, 3, 5, 7, // I
-        2, 4, 5, 7, // Z
-        3, 5, 4, 6, // S
-        3, 5, 4, 7, // T
-        2, 3, 5, 7, // L
-        3, 5, 7, 6, // J
-        2, 3, 4, 5, // O
-};
 
 /** Elimination counter.*/
 int tscore = 0;
@@ -43,12 +33,21 @@ struct Point
     int x, y;
 };
 /** initial bloack shape BELLA*/
-int ini_n = rand() % 6;
-
-Point a[4] = { {figures[ini_n][0] % 2,figures[ini_n][0] / 2}, {figures[ini_n][1] % 2,figures[ini_n][1] / 2}, {figures[ini_n][2] % 2,figures[ini_n][2] / 2}, {figures[ini_n][3] % 2,figures[ini_n][3] / 2} };
+Point a[4] = { {0,1}, {0,2}, {1,2}, {1,3} };
 Point b[4];
 
 
+/** Define 7 tetris shapes.*/
+int figures[7][4] =
+    {
+        1, 3, 5, 7, // I
+        2, 4, 5, 7, // Z
+        3, 5, 4, 6, // S
+        3, 5, 4, 7, // T
+        2, 3, 5, 7, // L
+        3, 5, 7, 6, // J
+        2, 3, 4, 5, // O
+};
 
 /** Init player's and enemy's shape and start pos.*/
 sf::Vector2f enemyStartPos = sf::Vector2f(150, 50);
@@ -421,13 +420,13 @@ void gameplay()
     srand(time(0));
 
     sf::Font font;
-    if (!font.loadFromFile("fonts/arial.ttf"))
+    if (!font.loadFromFile(resourcePath() + "sansation.ttf"))
     {
         window.setTitle("Font Error");
     }
-
+    
     Texture t1;
-    t1.loadFromFile("images/ntiles.png");
+    t1.loadFromFile(resourcePath()+"ntiles.png");
     Sprite s(t1);
 
     //define x coordinate of blocks
@@ -733,8 +732,8 @@ void gameplay()
                     continue;
                 }
                 //s.setTextureRect(IntRect(field[i][j] * 40, 0, 40, 40)); BELLA
-                s.setTextureRect(IntRect(field[i][j] * 100, 40, 40, 40//初始位置改这里BELLA
-                s.setPosition(164 + j * 41, i * 41);//初始位置改这里BELLA
+                s.setTextureRect(IntRect(field[i][j] * 100, 40, 40, 40));//初始位置改这里BELLA
+                s.setPosition(164 + j * 41, i * 41);//BELLA
                 // the top left point generate a new shape
                 s.move(180, 140);
                 // draw the sprite
@@ -743,7 +742,7 @@ void gameplay()
         }
 
         //for each block, regenerate the color
-/**        switch (nType)
+      /**  switch (nType)
         {
         case 0: //line
             cc[0] = 4;
@@ -793,7 +792,7 @@ void gameplay()
             cc[2] = colorIndex;
             cc[3] = colorIndex;
             break;
-        }BELLA*/
+        }  BELLA*/
 
         for (int i = 0; i < 4; i++)
         {
@@ -803,7 +802,7 @@ void gameplay()
              }
              else if(i==1)
              {
-                    cc[i] = col1rIndex_1;
+                    cc[i] = colorIndex_1;
              }
              else if(i==2)
              {
