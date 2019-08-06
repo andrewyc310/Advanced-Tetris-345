@@ -71,6 +71,7 @@ RenderWindow window(sf::VideoMode(1024, 1000), "Advanced Tetris");
  */
 sf::Text setText(std::string info, int x, int y)
 {
+    // Init text with font, content, size, colour, pos.
     sf::Text text;
     text.setFont(font);
     text.setString(info);
@@ -441,28 +442,20 @@ void gameplay()
 
     /* Set the score area*/
     int score = 0, level = 1, canc = 0;
-
-    // set score title, font, score title, character size, colour, position
+    // set score title
     sf::Text scoreTitle = setText("SCORE", 700, 50);
-
-    // set score text, font, init score, character size, colour, position
+    // set score text
     sf::Text strScore = setText("0", 700, 100);
-
-    // set cancelled title, font, cancelled titel, character size, colour, position
+    // set cancelled title
     sf::Text cancTitle = setText("CANCELLED", 700, 150);
-
-    // set cancelled text, font, init cancelled, character size, colour, position
+    // set cancelled text
     sf::Text cancScore= setText("0", 700, 200);
-
-    // set level title, font, level title, character size, colour, position
+    // set level title
     sf::Text levelTitle = setText("LEVEL", 700, 250);
-
-    // set level text, font, init level, character size, colour, position
+    // set level text
     sf::Text strLevel = setText("1", 700, 300);
-
-    // set help text, font, manual info, character size, colour, position
+    // set help text
     sf::Text manual = setText("UP: Rotate\nLeft/Right: Move\nDown: Speed Drop\nESC/P: Pause", 700, 350);
-
     // set test message, for test only
     sf::Text testMsg = setText("", 700, 650);
 
