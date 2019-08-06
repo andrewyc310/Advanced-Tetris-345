@@ -548,8 +548,8 @@ void gameplay()
         }
 
         // Enemy's chasing speed
-        enemyRect.move(0.2, 0);
-
+        enemyRect.move(0.16 + level * 0.04, 0);
+        
         // Enemy got you, game over
         if (playerRect.getGlobalBounds().intersects(enemyRect.getGlobalBounds()))
         {
