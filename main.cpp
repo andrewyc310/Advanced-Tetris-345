@@ -649,7 +649,7 @@ void gameplay()
                     pre_n = n;
                 }else {
                     n += 2;
-                    n = n % 5;
+                    n = n % 8;
                     pre_n = n;
                 }
                 for (int i = 0; i < 4; i++)
