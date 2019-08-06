@@ -414,6 +414,7 @@ void horizMove(int distanceX)
 /**
  * The game.
  */
+int pre_n =11;
 void gameplay()
 {
     srand(time(0));
@@ -643,6 +644,14 @@ void gameplay()
 
                 //initialise different tetris, n ranged from 0-6
                 nType = rand() % 7;
+                if (pre_n != n) 
+                {
+                    pre_n = n;
+                }else {
+                    n += 2;
+                    n = n % 5;
+                    pre_n = n;
+                }
                 for (int i = 0; i < 4; i++)
                 {
                     a[i].x = figures[nType][i] % 2;
@@ -698,7 +707,7 @@ void gameplay()
         }
 
         //for each block, regenerate the color
-      /**  switch (nType)
+        switch (nType)
         {
         case 0: //line
             cc[0] = 4;
@@ -748,11 +757,11 @@ void gameplay()
             cc[2] = colorIndex;
             cc[3] = colorIndex;
             break;
-        }  BELLA*/
+        }  
 
         for (int i = 0; i < 4; i++)
         {
-            cc[i] = colorIndex[i];
+            //cc[i] = colorIndex[i];
             //s.setTextureRect(IntRect(cc[i] * 40, 0, 40, 40));
             s.setTextureRect(IntRect(cc[i] * 100, 40, 40, 40)); //初始位置改这里BELLA
             s.setPosition(164 + a[i].x * 41, a[i].y * 41);//位置位置改这里BELLA
