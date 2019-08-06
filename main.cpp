@@ -8,7 +8,6 @@
 #include <time.h>
 #include <iostream>
 #include <set>
-
 using namespace std;
 using namespace sf;
 
@@ -30,11 +29,7 @@ int tscore = 0;
 struct Point
 {
     int x, y;
-};
-/** initial bloack shape BELLA*/
-Point a[4] = { {0,1}, {0,2}, {1,2}, {1,3} };
-Point b[4];
-
+} a[4], b[4];
 
 /** Define 7 tetris shapes.*/
 int figures[7][4] =
@@ -184,8 +179,7 @@ bool checkBlocksPos()
 {
     for (int i = 0; i < 4; i++)
     {
-        //if (a[i].x < 0 || a[i].x >= N || a[i].y >= M) BELLA
-        if (a[i].x < -4 || a[i].x >= 6 || a[i].y >= M)
+        if (a[i].x < 0 || a[i].x >= N || a[i].y >= M)
         {
             return 0;
         }
@@ -414,7 +408,6 @@ void horizMove(int distanceX)
 /**
  * The game.
  */
-int pre_n =11;
 void gameplay()
 {
     srand(time(0));
@@ -424,7 +417,7 @@ void gameplay()
     {
         window.setTitle("Font Error");
     }
-    
+
     Texture t1;
     t1.loadFromFile("images/ntiles.png");
     Sprite s(t1);
@@ -434,7 +427,7 @@ void gameplay()
     //define if rotate or not
     bool isRotate = 0;
     //define color index of image
-    int colorIndex [] = {2,3,4,1};
+    int colorIndex = 2;
     //difine timer
     float timer = 0;
     //define speed for gravity
@@ -447,68 +440,108 @@ void gameplay()
     /* Set the score area*/
     int score = 0, level = 1, canc = 0;
 
-    // set score title, select the font,set the score title,character size,color,position
+    // set score title
     sf::Text scoreTitle;
+    // select the font
     scoreTitle.setFont(font);
+    // set the score title
     scoreTitle.setString("SCORE");
+    // set the character size
     scoreTitle.setCharacterSize(24);
+    // set the color
     scoreTitle.setFillColor(sf::Color::Red);
+    // set the pos
     scoreTitle.setPosition(700, 50);
 
-    // set score text,select the font, set the init score,character size,color,position
+    // set score text
     sf::Text strScore;
+    // select the font
     strScore.setFont(font);
+    // set init score
     strScore.setString("0");
+    // set the character size
     strScore.setCharacterSize(24);
+    // set the color
     strScore.setFillColor(sf::Color::Red);
+    // set the pos
     strScore.setPosition(700, 100);
 
-    // set cancelled title,select the font,set the cancelled titel,character size,color,position
+    // set cancelled title
     sf::Text cancTitle;
+    // select the font
     cancTitle.setFont(font);
+    // set the cancelled titel
     cancTitle.setString("CANCELLED");
+    // set the character size
     cancTitle.setCharacterSize(24);
+    // set the color
     cancTitle.setFillColor(sf::Color::Red);
+    // set the pos
     cancTitle.setPosition(700, 150);
 
-    // set score title, select the font,set the score title,character size,color,position
+    // set cancelled text
     sf::Text cancScore;
+    // select the font
     cancScore.setFont(font);
+    // set init cancelled
     cancScore.setString("0");
+    // set the character size
     cancScore.setCharacterSize(24);
+    // set the color
     cancScore.setFillColor(sf::Color::Red);
+    // set the pos
     cancScore.setPosition(700, 200);
 
-    // set level title,select the font,set the level title,character size,color,position
+    // set level title
     sf::Text levelTitle;
+    // select the font
     levelTitle.setFont(font);
+    // set the level title
     levelTitle.setString("LEVEL");
+    // set the character size
     levelTitle.setCharacterSize(24);
+    // set the color
     levelTitle.setFillColor(sf::Color::Red);
+    // set the pos
     levelTitle.setPosition(700, 250);
 
-    // set level text,select the font,set init level,character size,color,position
+    // set level text
     sf::Text strLevel;
+    // select the font
     strLevel.setFont(font);
+    // set init level
     strLevel.setString("1");
+    // set the character size
     strLevel.setCharacterSize(24);
+    // set the color
     strLevel.setFillColor(sf::Color::Red);
+    // set the pos
     strLevel.setPosition(700, 300);
 
-    // set help text,select the font,set control manual,character size,color,position
+    // set help text
     sf::Text helpText;
+    // select the font
     helpText.setFont(font);
+    // set init level
     helpText.setString("UP: Rotate\nLeft/Right: Move\nDown: Speed Drop\nESC/P: Pause");
+    // set the character size
     helpText.setCharacterSize(24);
+    // set the color
     helpText.setFillColor(sf::Color::Red);
+    // set the pos
     helpText.setPosition(700, 350);
 
     // set test message, for test only
     sf::Text testMsg;
+    // select the font
     testMsg.setFont(font);
+    // set init level
     testMsg.setString("");
+    // set the character size
     testMsg.setCharacterSize(24);
+    // set the color
     testMsg.setFillColor(sf::Color::Red);
+    // set the pos
     testMsg.setPosition(700, 650);
 
     /*main playing area container*/
@@ -632,26 +665,18 @@ void gameplay()
 
             if (!checkBlocksPos())
             {
+                //for (int i=0;i<4;i++) field[b[i].y][b[i].x]=colorIndex;
                 for (int i = 0; i < 4; i++)
                 {
                     field[b[i].y][b[i].x] = cc[i];
+                    //field[b[i].y][b[i].x]=colorIndex;
                 }
                 fullLine();
-                for (int i = 0; i < 4; i++){
-                colorIndex[i] = 1 + rand() % 6;
-                }//update color index for first block
-                 //update color index for 4th block
+                colorIndex = 1 + rand() % 6; //update color index from 1 to 6
+                //colorIndex = rand() % 7; //update color index from 1 to 6
 
                 //initialise different tetris, n ranged from 0-6
                 nType = rand() % 7;
-                if (pre_n != n) 
-                {
-                    pre_n = n;
-                }else {
-                    n += 2;
-                    n = n % 8;
-                    pre_n = n;
-                }
                 for (int i = 0; i < 4; i++)
                 {
                     a[i].x = figures[nType][i] % 2;
@@ -696,9 +721,8 @@ void gameplay()
                 {
                     continue;
                 }
-                //s.setTextureRect(IntRect(field[i][j] * 40, 0, 40, 40)); BELLA
-                s.setTextureRect(IntRect(field[i][j] * 100, 40, 40, 40));//初始位置改这里BELLA
-                s.setPosition(164 + j * 41, i * 41);//BELLA
+                s.setTextureRect(IntRect(field[i][j] * 40, 0, 40, 40));
+                s.setPosition(j * 41, i * 41);
                 // the top left point generate a new shape
                 s.move(180, 140);
                 // draw the sprite
@@ -757,14 +781,12 @@ void gameplay()
             cc[2] = colorIndex;
             cc[3] = colorIndex;
             break;
-        }  
+        }
 
         for (int i = 0; i < 4; i++)
         {
-            //cc[i] = colorIndex[i];
-            //s.setTextureRect(IntRect(cc[i] * 40, 0, 40, 40));
-            s.setTextureRect(IntRect(cc[i] * 100, 40, 40, 40)); //初始位置改这里BELLA
-            s.setPosition(164 + a[i].x * 41, a[i].y * 41);//位置位置改这里BELLA
+            s.setTextureRect(IntRect(cc[i] * 40, 0, 40, 40));
+            s.setPosition(a[i].x * 41, a[i].y * 41);
             //the top left point generate a new shape
             s.move(180, 140);
             // draw the sprite
