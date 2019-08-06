@@ -22,6 +22,18 @@ int field[M][N] = {0};
 /** Elimination counter.*/
 int tscore = 0;
 
+/** Font for text.*/
+sf::Font font;
+
+/** Colours for text. */
+sf::Color fontColours[] = {
+    sf::Color::Red,
+    sf::Color::Blue,
+    sf::Color::Yellow,
+    sf::Color::Green,
+    sf::Color::Magenta
+};
+
 /**
  * Define a constructor Point.
  * a[4] and b[4] hold the coordinate of each tetris (contains 4 block each tetris).
@@ -53,22 +65,30 @@ sf::RectangleShape playerRect(sf::Vector2f(50, 50));
 RenderWindow window(sf::VideoMode(1024, 1000), "Advanced Tetris");
 
 /**
+ * Set text attributs.
+ * @param info content of text.
+ * @param x, y position of text.
+ */
+sf::Text setText(std::string info, int x, int y)
+{
+    sf::Text text;
+    text.setFont(font);
+    text.setString(info);
+    text.setCharacterSize(24);
+    text.setFillColor(fontColours[0]);
+    text.setPosition(x, y);
+    return text;
+}
+
+/**
  * Show welcome screen.
  * @param font the font of the text.
  */
 void showWelcome(sf::Font font)
 {
     Event e;
-    sf::Text welcome;
-    // select the font
-    welcome.setFont(font);
-    // set the welcome text
-    welcome.setString("          Welcome!\nPress any key to play");
-    // set the character size
-    welcome.setCharacterSize(24);
-    // set the color
-    welcome.setFillColor(sf::Color::Red);
-    welcome.setPosition(350, 400);
+    //Set welcome info
+    sf::Text welcome = setText("          Welcome!\nPress any key to play", 350, 400);
     while (window.isOpen())
     {
         // Event listener
@@ -99,16 +119,8 @@ void showWelcome(sf::Font font)
 void showPause(sf::Font font)
 {
     Event e;
-    sf::Text pause;
-    // select the font
-    pause.setFont(font);
-    // set the game over text
-    pause.setString("Game pausing, press 'Y' to continue.");
-    // set the character size
-    pause.setCharacterSize(24);
-    // set the color
-    pause.setFillColor(sf::Color::Red);
-    pause.setPosition(300, 400);
+    //Set pause info
+    sf::Text pause = setText("Game pausing, press 'Y' to continue.", 300, 400);
     while (window.isOpen())
     {
         // Event listener
@@ -138,16 +150,7 @@ void showPause(sf::Font font)
 void showOver(sf::Font font)
 {
     Event e;
-    sf::Text gameOver;
-    // select the font
-    gameOver.setFont(font);
-    // set the game over text
-    gameOver.setString("Game Over, press 'Y' to play again.");
-    // set the character size
-    gameOver.setCharacterSize(24);
-    // set the color
-    gameOver.setFillColor(sf::Color::Red);
-    gameOver.setPosition(300, 400);
+    sf::Text gameOver = setText("Game Over, press 'Y' to play again.", 300, 400);
     while (window.isOpen())
     {
         // Event listener
@@ -412,7 +415,6 @@ void gameplay()
 {
     srand(time(0));
 
-    sf::Font font;
     if (!font.loadFromFile("fonts/arial.ttf"))
     {
         window.setTitle("Font Error");
@@ -440,109 +442,29 @@ void gameplay()
     /* Set the score area*/
     int score = 0, level = 1, canc = 0;
 
-    // set score title
-    sf::Text scoreTitle;
-    // select the font
-    scoreTitle.setFont(font);
-    // set the score title
-    scoreTitle.setString("SCORE");
-    // set the character size
-    scoreTitle.setCharacterSize(24);
-    // set the color
-    scoreTitle.setFillColor(sf::Color::Red);
-    // set the pos
-    scoreTitle.setPosition(700, 50);
+    // set score title, font, score title, character size, colour, position
+    sf::Text scoreTitle = setText("SCORE", 700, 50);
 
-    // set score text
-    sf::Text strScore;
-    // select the font
-    strScore.setFont(font);
-    // set init score
-    strScore.setString("0");
-    // set the character size
-    strScore.setCharacterSize(24);
-    // set the color
-    strScore.setFillColor(sf::Color::Red);
-    // set the pos
-    strScore.setPosition(700, 100);
+    // set score text, font, init score, character size, colour, position
+    sf::Text strScore = setText("0", 700, 100);
 
-    // set cancelled title
-    sf::Text cancTitle;
-    // select the font
-    cancTitle.setFont(font);
-    // set the cancelled titel
-    cancTitle.setString("CANCELLED");
-    // set the character size
-    cancTitle.setCharacterSize(24);
-    // set the color
-    cancTitle.setFillColor(sf::Color::Red);
-    // set the pos
-    cancTitle.setPosition(700, 150);
+    // set cancelled title, font, cancelled titel, character size, colour, position
+    sf::Text cancTitle = setText("CANCELLED", 700, 150);
 
-    // set cancelled text
-    sf::Text cancScore;
-    // select the font
-    cancScore.setFont(font);
-    // set init cancelled
-    cancScore.setString("0");
-    // set the character size
-    cancScore.setCharacterSize(24);
-    // set the color
-    cancScore.setFillColor(sf::Color::Red);
-    // set the pos
-    cancScore.setPosition(700, 200);
+    // set cancelled text, font, init cancelled, character size, colour, position
+    sf::Text cancScore= setText("0", 700, 200);
 
-    // set level title
-    sf::Text levelTitle;
-    // select the font
-    levelTitle.setFont(font);
-    // set the level title
-    levelTitle.setString("LEVEL");
-    // set the character size
-    levelTitle.setCharacterSize(24);
-    // set the color
-    levelTitle.setFillColor(sf::Color::Red);
-    // set the pos
-    levelTitle.setPosition(700, 250);
+    // set level title, font, level title, character size, colour, position
+    sf::Text levelTitle = setText("LEVEL", 700, 250);
 
-    // set level text
-    sf::Text strLevel;
-    // select the font
-    strLevel.setFont(font);
-    // set init level
-    strLevel.setString("1");
-    // set the character size
-    strLevel.setCharacterSize(24);
-    // set the color
-    strLevel.setFillColor(sf::Color::Red);
-    // set the pos
-    strLevel.setPosition(700, 300);
+    // set level text, font, init level, character size, colour, position
+    sf::Text strLevel = setText("1", 700, 300);
 
-    // set help text
-    sf::Text helpText;
-    // select the font
-    helpText.setFont(font);
-    // set init level
-    helpText.setString("UP: Rotate\nLeft/Right: Move\nDown: Speed Drop\nESC/P: Pause");
-    // set the character size
-    helpText.setCharacterSize(24);
-    // set the color
-    helpText.setFillColor(sf::Color::Red);
-    // set the pos
-    helpText.setPosition(700, 350);
+    // set help text, font, manual info, character size, colour, position
+    sf::Text manual = setText("UP: Rotate\nLeft/Right: Move\nDown: Speed Drop\nESC/P: Pause", 700, 350);
 
     // set test message, for test only
-    sf::Text testMsg;
-    // select the font
-    testMsg.setFont(font);
-    // set init level
-    testMsg.setString("");
-    // set the character size
-    testMsg.setCharacterSize(24);
-    // set the color
-    testMsg.setFillColor(sf::Color::Red);
-    // set the pos
-    testMsg.setPosition(700, 650);
+    sf::Text testMsg = setText("", 700, 650);
 
     /*main playing area container*/
     sf::RectangleShape container(sf::Vector2f(411, 830));
@@ -647,6 +569,14 @@ void gameplay()
         {
             level++;
             strLevel.setString(std::to_string(level));
+            scoreTitle.setFillColor(fontColours[level]);
+            strScore.setFillColor(fontColours[level]);
+            cancTitle.setFillColor(fontColours[level]);
+            cancScore.setFillColor(fontColours[level]);
+            levelTitle.setFillColor(fontColours[level]);
+            strLevel.setFillColor(fontColours[level]);
+            manual.setFillColor(fontColours[level]);
+            testMsg.setFillColor(fontColours[level]);
             enemyRect.setPosition(enemyStartPos);
             playerRect.setPosition(playerStartPos);
         }
@@ -710,7 +640,7 @@ void gameplay()
         window.draw(cancScore);
         window.draw(levelTitle);
         window.draw(strLevel);
-        window.draw(helpText);
+        window.draw(manual);
         window.draw(testMsg);
 
         for (int i = 0; i < M; i++)
