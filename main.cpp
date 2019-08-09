@@ -56,7 +56,7 @@ struct Point
 {
 	int x, y;
 };
-int ini_n = rand() % 4;
+int ini_n = rand() % 6;
 Point a[4] = { {figures[ini_n][0] % 2,figures[ini_n][0] / 2}, {figures[ini_n][1] % 2,figures[ini_n][1] / 2}, {figures[ini_n][2] % 2,figures[ini_n][2] / 2}, {figures[ini_n][3] % 2,figures[ini_n][3] / 2} };
 Point b[4];
 
@@ -620,7 +620,7 @@ void gameplay()
 				else {
 					//printf("【==】");
 					nType += 2;
-					nType = nType % 5;
+					nType = nType % 7;
 					prev_n = nType;
 				}
 				for (int i = 0; i < 4; i++)
