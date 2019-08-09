@@ -11,7 +11,6 @@
 using namespace std;
 using namespace sf;
 
-
 /** Horizont Block size.*/
 const int M = 20;
 /** Verticle block size.*/
@@ -35,7 +34,6 @@ sf::Color fontColours[] = {
 	sf::Color::Magenta
 };
 
-
 /** Define 7 tetris shapes.*/
 int figures[7][4] =
 {
@@ -47,7 +45,6 @@ int figures[7][4] =
 	3, 5, 7, 6, // J
 	2, 3, 4, 5, // O
 };
-
 
 /**
  * Define a constructor Point.
@@ -66,8 +63,6 @@ Point b[4];
 /** Init player's and enemy's shape and start pos.*/
 sf::Vector2f enemyStartPos = sf::Vector2f(150, 50);
 sf::Vector2f playerStartPos = sf::Vector2f(300, 50);
-sf::RectangleShape enemyRect(sf::Vector2f(50, 50));
-sf::RectangleShape playerRect(sf::Vector2f(50, 50));
 
 /** The window of the game.*/
 RenderWindow window(sf::VideoMode(1024, 1000), "Advanced Tetris");
@@ -387,19 +382,6 @@ void checkElimination()
 }
 
 /**
- * Init player and enemy position.
- */
-void initPlayerPos()
-{
-	enemyRect.setFillColor(sf::Color::Red);
-	enemyRect.setPosition(enemyStartPos);
-	enemyRect.setOrigin(enemyRect.getSize() * 0.5f); // The center of the rectangle
-	playerRect.setFillColor(sf::Color::Blue);
-	playerRect.setPosition(playerStartPos);
-	playerRect.setOrigin(playerRect.getSize() * 0.5f); // The center of the rectangle
-}
-
-/**
  * Left and right movement.
  * @param distanceX the amount to move.
  */
@@ -476,7 +458,17 @@ void gameplay()
 	container.setPosition(179, 130);
 
 	/*enemy and player*/
-	initPlayerPos();
+    Texture enemyT;
+    enemyT.loadFromFile("images/enemy.png");
+    Sprite enemy(enemyT);
+    enemy.scale(0.2, 0.2);
+    Texture playerT;
+    playerT.loadFromFile("images/player.png");
+    Sprite player(playerT);
+    player.scale(0.2, 0.2);
+    enemy.setPosition(enemyStartPos);
+    player.setPosition(playerStartPos);
+   
 	// set a flag to decide if to show welcome screen
 	bool isShowWelcome = 1;
 	int cc[4] = { 0 };
@@ -548,8 +540,8 @@ void gameplay()
 				{
 					/* for test only, press insert to get score,
 					 cancellation, move player*/
-					enemyRect.move(-1, 0);
-					playerRect.move(1, 0);
+					enemy.move(-1, 0);
+					player.move(1, 0);
 					score += 10;
 					strScore.setString(std::to_string(score));
 					canc++;
@@ -559,31 +551,31 @@ void gameplay()
 		}
 
 		// Enemy's chasing speed
-		enemyRect.move(0.16 + level * 0.04, 0);
+		enemy.move(0.16 + level * 0.04, 0);
 
 		// Enemy got you, game over
-		if (playerRect.getGlobalBounds().intersects(enemyRect.getGlobalBounds()))
+		if (player.getGlobalBounds().intersects(enemy.getGlobalBounds()))
 		{
 			showOver(font);
 			return;
 		}
 
 		// enter next level
-		if (playerRect.getPosition().x >= 550)
-		{
-			level++;
-			strLevel.setString(std::to_string(level));
-			scoreTitle.setFillColor(fontColours[level]);
-			strScore.setFillColor(fontColours[level]);
-			cancTitle.setFillColor(fontColours[level]);
-			cancScore.setFillColor(fontColours[level]);
-			levelTitle.setFillColor(fontColours[level]);
-			strLevel.setFillColor(fontColours[level]);
-			manual.setFillColor(fontColours[level]);
-			testMsg.setFillColor(fontColours[level]);
-			enemyRect.setPosition(enemyStartPos);
-			playerRect.setPosition(playerStartPos);
-		}
+		if (player.getPosition().x >= 550)
+        {
+            level++;
+            strLevel.setString(std::to_string(level));
+            scoreTitle.setFillColor(fontColours[level]);
+            strScore.setFillColor(fontColours[level]);
+            cancTitle.setFillColor(fontColours[level]);
+            cancScore.setFillColor(fontColours[level]);
+            levelTitle.setFillColor(fontColours[level]);
+            strLevel.setFillColor(fontColours[level]);
+            manual.setFillColor(fontColours[level]);
+            testMsg.setFillColor(fontColours[level]);
+            enemy.setPosition(enemyStartPos);
+            player.setPosition(playerStartPos);
+        }
 
 		//left and right movement
 		horizMove(distanceX);
@@ -635,7 +627,7 @@ void gameplay()
 
 		// block elimination, player move and scores update
 		checkElimination();
-		playerRect.move(tscore * tscore / 2, 0);
+		player.move(tscore * tscore / 2, 0);
 		score += tscore * tscore * 2;
 		strScore.setString(std::to_string(score));
 		canc += tscore;
@@ -648,8 +640,8 @@ void gameplay()
 
 		// drawing elements
 		window.clear();
-		window.draw(playerRect);
-		window.draw(enemyRect);
+		window.draw(player);
+		window.draw(enemy);
 		window.draw(container);
 		window.draw(scoreTitle);
 		window.draw(strScore);
