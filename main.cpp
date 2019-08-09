@@ -58,8 +58,6 @@ int ini_n = rand() % 6;
 Point a[4] = { {figures[ini_n][0] % 2,figures[ini_n][0] / 2}, {figures[ini_n][1] % 2,figures[ini_n][1] / 2}, {figures[ini_n][2] % 2,figures[ini_n][2] / 2}, {figures[ini_n][3] % 2,figures[ini_n][3] / 2} };
 Point b[4];
 
-
-
 /** Init player's and enemy's shape and start pos.*/
 sf::Vector2f enemyStartPos = sf::Vector2f(150, 50);
 sf::Vector2f playerStartPos = sf::Vector2f(300, 50);
