@@ -11,6 +11,7 @@
 using namespace std;
 using namespace sf;
 
+
 /** Horizont Block size.*/
 const int M = 20;
 /** Verticle block size.*/
@@ -425,7 +426,7 @@ int prev_n = 11;
 void gameplay()
 {
 	srand(time(0));
-	
+
 	if (!font.loadFromFile("fonts/arial.ttf"))
 	{
 		window.setTitle("Font Error");
@@ -668,8 +669,8 @@ void gameplay()
 				{
 					continue;
 				}
-				s.setTextureRect(IntRect(field[i][j] * 100, 0, 40, 40));
-				s.setPosition(164+j * 41, i * 41);
+				s.setTextureRect(IntRect(field[i][j] * 40, 0, 40, 40));
+				s.setPosition(164 + j * 41, i * 41);
 				// the top left point generate a new shape
 				s.move(180, 140);
 				// draw the sprite
@@ -732,8 +733,8 @@ void gameplay()
 
 		for (int i = 0; i < 4; i++)
 		{
-			s.setTextureRect(IntRect(cc[i] * 100, 0, 40, 40));
-			s.setPosition(164+a[i].x * 41, a[i].y * 41);
+			s.setTextureRect(IntRect(cc[i] * 40, 0, 40, 40));
+			s.setPosition(164 + a[i].x * 41, a[i].y * 41);
 			//the top left point generate a new shape
 			s.move(180, 140);
 			// draw the sprite
