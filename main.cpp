@@ -26,6 +26,9 @@ int field[M][N] = { 0 };
 /** Elimination counter.*/
 int tscore = 0;
 
+/** previous nType.*/
+int pre_n = 11;
+
 /** Font for text.*/
 sf::Font font;
 
@@ -37,6 +40,17 @@ sf::Color fontColours[] = {
     sf::Color::Green,
     sf::Color::Magenta
 };
+
+/**
+ * Define a constructor Point.
+ * a[4] and b[4] hold the coordinate of each tetris (contains 4 block each tetris).
+ */
+struct Point
+{
+	int x, y;
+};
+Point a[4] = { {1,1},{1,2},{0,2},{1,3} };
+Point b[4];
 
 /** Define 7 tetris shapes.*/
 int figures[7][4] =
@@ -50,14 +64,6 @@ int figures[7][4] =
     2, 3, 4, 5, // O
 };
 
-/**
- * Define a constructor Point.
- * a[4] and b[4] hold the coordinate of each tetris (contains 4 block each tetris).
- */
-struct Point
-{
-    int x, y;
-} a[4], b[4];
 
 /** Init player's and enemy's shape and start pos.*/
 sf::Vector2f enemyStartPos = sf::Vector2f(150, 50);
@@ -630,6 +636,18 @@ void gameplay()
                 colorIndex = 1 + rand() % 6; //update color index from 1 to 6
       
                 nType = rand() % 7;
+                
+                if (pre_n != nType)
+				{
+					pre_n = nType;
+				}
+				else 
+                {
+					nType += 2;
+					nType = nType % 8;
+					pre_n = nType;
+				}
+                
                 for (int i = 0; i < 4; i++)
                 {
                     a[i].x = figures[nType][i] % 2;
