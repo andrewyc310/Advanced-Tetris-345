@@ -638,15 +638,15 @@ void gameplay()
                 nType = rand() % 7;
                 
                 if (pre_n != nType)
-				{
-					pre_n = nType;
-				}
-				else 
+		{
+		    pre_n = nType;
+		}
+		else 
                 {
-					nType += 2;
-					nType = nType % 8;
-					pre_n = nType;
-				}
+		    nType += 2;
+		    nType = nType % 8;
+	            pre_n = nType;
+		}
                 
                 for (int i = 0; i < 4; i++)
                 {
