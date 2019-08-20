@@ -41,16 +41,6 @@ sf::Color fontColours[] = {
     sf::Color::Magenta
 };
 
-/**
- * Define a constructor Point.
- * a[4] and b[4] hold the coordinate of each tetris (contains 4 block each tetris).
- */
-struct Point
-{
-	int x, y;
-};
-Point a[4] = { {1,1},{1,2},{0,2},{1,3} };
-Point b[4];
 
 /** Define 7 tetris shapes.*/
 int figures[7][4] =
@@ -63,6 +53,19 @@ int figures[7][4] =
     3, 5, 7, 6, // J
     2, 3, 4, 5, // O
 };
+
+/**
+ * Define a constructor Point.
+ * a[4] and b[4] hold the coordinate of each tetris (contains 4 block each tetris).
+ */
+struct Point
+{
+	int x, y;
+};
+int ini_n = rand() % 6;
+Point a[4] = { {figures[ini_n][0] % 2,figures[ini_n][0] / 2}, {figures[ini_n][1] % 2,figures[ini_n][1] / 2}, {figures[ini_n][2] % 2,figures[ini_n][2] / 2}, {figures[ini_n][3] % 2,figures[ini_n][3] / 2} };
+Point b[4];
+
 
 
 /** Init player's and enemy's shape and start pos.*/
