@@ -8,6 +8,8 @@
 #include <time.h>
 #include <iostream>
 #include <set>
+
+
 using namespace std;
 using namespace sf;
 
@@ -41,6 +43,16 @@ sf::Color fontColours[] = {
     sf::Color::Magenta
 };
 
+/**
+ * Define a constructor Point.
+ * a[4] and b[4] hold the coordinate of each tetris (contains 4 block each tetris).
+ */
+struct Point
+{
+    int x, y;
+};
+Point a[4] = { {1,1},{1,2},{0,2},{1,3} };
+Point b[4];
 
 /** Define 7 tetris shapes.*/
 int figures[7][4] =
@@ -53,19 +65,6 @@ int figures[7][4] =
     3, 5, 7, 6, // J
     2, 3, 4, 5, // O
 };
-
-/**
- * Define a constructor Point.
- * a[4] and b[4] hold the coordinate of each tetris (contains 4 block each tetris).
- */
-struct Point
-{
-	int x, y;
-};
-int ini_n = rand() % 6;
-Point a[4] = { {figures[ini_n][0] % 2,figures[ini_n][0] / 2}, {figures[ini_n][1] % 2,figures[ini_n][1] / 2}, {figures[ini_n][2] % 2,figures[ini_n][2] / 2}, {figures[ini_n][3] % 2,figures[ini_n][3] / 2} };
-Point b[4];
-
 
 
 /** Init player's and enemy's shape and start pos.*/
@@ -287,7 +286,7 @@ void fullLine()
 int adjacentCount(int nValue, int nRow, int nCol, set<int> &sLst, bool bElm = false)
 {
     t1.loadFromFile("images/ntiles1.png");
-
+    
     //top bottom left right
     if (nRow - 1 > -1 && field[nRow - 1][nCol] == nValue)
     {
@@ -568,6 +567,51 @@ void gameplay()
                 {
                     delay = 0.05;
                 }
+                else if (e.key.code == Keyboard::Space)
+                {
+                    int calc;
+                    int temp_y=0;
+                    int hor;
+                    int col;
+                    
+                    for (int i = 3; i >= 0; i--)
+                    {
+                        hor = a[i].x;
+                        cout << "hor is " << hor << ". ";
+                        if (a[i].y > temp_y) {
+                            temp_y = a[i].y;
+                        }
+                    }
+                    if (field[19][hor] == 0) {
+                        
+                        calc = 18 - temp_y;
+                        cout << "calc is " << calc << ". ";
+                        for (int i = 3; i >= 0; i--)
+                        {
+                            a[i].y += calc;
+                        }
+                    }else {
+                        for (int j = 0; j < 20; j++) {
+                            if (field[j][hor] != 0) {
+                                cout << "j is " << j << ". ";
+                                col = j - 2;
+                                //field[j][hor] = cc[i];
+                                //
+                                break;
+                            }
+                        }
+                        calc = col - temp_y;
+                        for (int i = 3; i >= 0; i--)
+                        {
+                            
+                            //a[i].y = col;
+                            a[i].y += calc;
+                            //b[i] = a[i];
+                        }
+                        
+                    }
+                    cout << "\t ";
+                }
                 else if (e.key.code == Keyboard::P)
                 {
                     showPause(font);
@@ -637,19 +681,19 @@ void gameplay()
                 }
                 fullLine();
                 colorIndex = 1 + rand() % 6; //update color index from 1 to 6
-      
+                
                 nType = rand() % 7;
                 
                 if (pre_n != nType)
-		{
-		    pre_n = nType;
-		}
-		else 
                 {
-		    nType += 2;
-		    nType = nType % 8;
-	            pre_n = nType;
-		}
+                    pre_n = nType;
+                }
+                else
+                {
+                    nType += 2;
+                    nType = nType % 8;
+                    pre_n = nType;
+                }
                 
                 for (int i = 0; i < 4; i++)
                 {
