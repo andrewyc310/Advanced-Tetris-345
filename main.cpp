@@ -118,7 +118,6 @@ void showWelcome(sf::Font font)
         // drawing elements
         window.clear();
         window.draw(welcome);
-        
         window.display();
     }
 }
@@ -197,7 +196,7 @@ bool checkBlocksPos()
         {
             return 0;
         }
-        if (field[a[i].y][a[i].x])
+        if (field[a[i].y][a[i].x]!=0)
         {
             return 0;
         }
@@ -450,7 +449,7 @@ void gameplay()
 {
     srand(time(0));
     
-    if (!font.loadFromFile("fonts/arial.ttf"))
+    if (!font.loadFromFile("fonts/sansation.ttf"))
     {
         window.setTitle("Font Error");
     }
@@ -487,7 +486,7 @@ void gameplay()
     // set level text
     sf::Text strLevel = setText("1", 700, 300);
     // set help text
-    sf::Text manual = setText("UP: Rotate\nLeft/Right: Move\nDown: Speed Drop\nESC/P: Pause", 700, 350);
+    sf::Text manual = setText("UP: Rotate\nLeft/Right: Move\nDown: Speed Drop\nSpace: Instant Drop\nESC/P: Pause", 700, 350);
     // set test message, for test only
     sf::Text testMsg = setText("", 700, 650);
     
@@ -577,7 +576,6 @@ void gameplay()
                     for (int i = 3; i >= 0; i--)
                     {
                         hor = a[i].x;
-                        cout << "hor is " << hor << ". ";
                         if (a[i].y > temp_y) {
                             temp_y = a[i].y;
                         }
@@ -585,7 +583,6 @@ void gameplay()
                     if (field[19][hor] == 0) {
                         
                         calc = 18 - temp_y;
-                        cout << "calc is " << calc << ". ";
                         for (int i = 3; i >= 0; i--)
                         {
                             a[i].y += calc;
@@ -593,20 +590,14 @@ void gameplay()
                     }else {
                         for (int j = 0; j < 20; j++) {
                             if (field[j][hor] != 0) {
-                                cout << "j is " << j << ". ";
                                 col = j - 2;
-                                //field[j][hor] = cc[i];
-                                //
                                 break;
                             }
                         }
                         calc = col - temp_y;
                         for (int i = 3; i >= 0; i--)
                         {
-                            
-                            //a[i].y = col;
                             a[i].y += calc;
-                            //b[i] = a[i];
                         }
                         
                     }
@@ -694,7 +685,6 @@ void gameplay()
                     nType = nType % 8;
                     pre_n = nType;
                 }
-                
                 for (int i = 0; i < 4; i++)
                 {
                     a[i].x = figures[nType][i] % 2;
@@ -703,7 +693,8 @@ void gameplay()
             }
             timer = 0;
         }
-        if (!checkOver()){
+        if (!checkOver())
+        {
             showOver(font);
             return;
         }
@@ -804,7 +795,6 @@ void gameplay()
                 cc[3] = colorIndex;
                 break;
         }
-        
         for (int i = 0; i < 4; i++)
         {
             s.setTextureRect(IntRect(cc[i] * 40, 0, 40, 40));
@@ -814,7 +804,6 @@ void gameplay()
             // draw the sprite
             window.draw(s);
         }
-        
         window.display();
     }
 }
@@ -844,6 +833,5 @@ int main()
             b[i].y = 0;
         }
     }
-    
     return 0;
 }
