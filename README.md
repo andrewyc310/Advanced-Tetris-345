@@ -2,7 +2,6 @@
 Download all the files except those in others folder.
 
 Install SFML for macos:
-Uncompress SFML-2.5.1-macOS-clang.tar.gz
 
 Header files and libraries
 SFML is available either as dylibs or as frameworks. Only one type of binary is required although both can be installed simultaneously on the same system. We recommend using the frameworks.
@@ -14,8 +13,11 @@ SFML dependencies
 SFML depends on a few external libraries on macOS. Copy the content of extlibs to /Library/Frameworks.
 
 How to run:
-Unzip Advanced Tetris.app.zip
+
 Run the program by simply double click on Advanced Tetris.app
+If there is a warning about unauthorised developer, go to  System Preferences  -> Security & Privacy -> Open Anyway
+For more information, please read the instruction in https://www.macworld.co.uk/how-to/mac-software/mac-app-unidentified-developer-3669596/
+
 
 To check that our source code matches our program:
 Run terminal then navigate to your download position and excute following 3 commands:
@@ -25,5 +27,5 @@ g++ main.o -o game -LSFML/lib -lsfml-graphics -lsfml-window -lsfml-system
 
 export LD_LIBRARY_PATH=SFML/lib && ./game
 
-(These commands are given by the SFML official webiste https://www.sfml-dev.org/tutorials/2.5/start-linux.php for Linux
+(These commands are given by the SFML official webiste https://www.sfml-dev.org/tutorials/2.5/start-linux.php 
 When use these on Mac, the menu doesn't work properly. Therefore, it's only used for test purpose.)
