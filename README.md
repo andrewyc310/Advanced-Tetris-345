@@ -20,12 +20,7 @@ For more information, please read the instruction in https://www.macworld.co.uk/
 
 
 To check that our source code matches our program:
-Run terminal then navigate to your download position and excute following 3 commands:
-g++ -c main.cpp -ISFML/include
+Run terminal then navigate to your download position and execute the command: make
 
-g++ main.o -o game -LSFML/lib -lsfml-graphics -lsfml-window -lsfml-system
-
-export LD_LIBRARY_PATH=SFML/lib && ./game
-
-(These commands are given by the SFML official webiste https://www.sfml-dev.org/tutorials/2.5/start-linux.php 
+(Commands in the makefile are given by the SFML official webiste https://www.sfml-dev.org/tutorials/2.5/start-linux.php 
 When use these on Mac, the menu doesn't work properly. Therefore, it's only used for test purpose.)
