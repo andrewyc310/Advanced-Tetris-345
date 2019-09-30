@@ -8,7 +8,6 @@
 #include <time.h>
 #include <iostream>
 #include <set>
-#include <ResourcePath.hpp>
 
 
 using namespace std;
@@ -285,7 +284,7 @@ void fullLine()
  */
 int adjacentCount(int nValue, int nRow, int nCol, set<int> &sLst, bool bElm = false)
 {
-    t1.loadFromFile(resourcePath() + "ntiles1.png");
+    t1.loadFromFile("images/ntiles1.png");
     
     //top bottom left right
     if (nRow - 1 > -1 && field[nRow - 1][nCol] == nValue)
@@ -452,12 +451,12 @@ void gameplay()
 {
     srand(time(0));
     
-    if (!font.loadFromFile(resourcePath() + "sansation.ttf"))
+    if (!font.loadFromFile("fonts/sansation.ttf"))
     {
         window.setTitle("Font Error");
     }
     
-    t1.loadFromFile(resourcePath() + "ntiles1.png");
+    t1.loadFromFile("images/ntiles1.png");
     
     //define x coordinate of blocks
     int distanceX = 0;
@@ -500,11 +499,11 @@ void gameplay()
     
     /*enemy and player*/
     Texture enemyT;
-    enemyT.loadFromFile(resourcePath() + "enemy.png");
+    enemyT.loadFromFile("images/enemy.png");
     Sprite enemy(enemyT);
     enemy.scale(0.2, 0.2);
     Texture playerT;
-    playerT.loadFromFile(resourcePath() + "player.png");
+    playerT.loadFromFile("images/player.png");
     Sprite player(playerT);
     player.scale(0.2, 0.2);
     enemy.setPosition(enemyStartPos);
