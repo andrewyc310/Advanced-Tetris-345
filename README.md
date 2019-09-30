@@ -25,5 +25,5 @@ g++ main.o -o game -LSFML/lib -lsfml-graphics -lsfml-window -lsfml-system
 
 export LD_LIBRARY_PATH=SFML/lib && ./game
 
-(These commands are given by the SFML official webiste https://www.sfml-dev.org/tutorials/2.5/start-linux.php 
+(These commands are given by the SFML official webiste https://www.sfml-dev.org/tutorials/2.5/start-linux.php for Linux
 When use these on Mac, the menu doesn't work properly. Therefore, it's only used for test purpose.)
