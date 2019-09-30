@@ -640,14 +640,15 @@ void gameplay()
         {
             level++;
             strLevel.setString(std::to_string(level));
-            scoreTitle.setFillColor(fontColours[level]);
-            strScore.setFillColor(fontColours[level]);
-            cancTitle.setFillColor(fontColours[level]);
-            cancScore.setFillColor(fontColours[level]);
-            levelTitle.setFillColor(fontColours[level]);
-            strLevel.setFillColor(fontColours[level]);
-            manual.setFillColor(fontColours[level]);
-            testMsg.setFillColor(fontColours[level]);
+            int idx = level % 5;
+            scoreTitle.setFillColor(fontColours[idx]);
+            strScore.setFillColor(fontColours[idx]);
+            cancTitle.setFillColor(fontColours[idx]);
+            cancScore.setFillColor(fontColours[idx]);
+            levelTitle.setFillColor(fontColours[idx]);
+            strLevel.setFillColor(fontColours[idx]);
+            manual.setFillColor(fontColours[idx]);
+            testMsg.setFillColor(fontColours[idx]);
             enemy.setPosition(enemyStartPos);
             player.setPosition(playerStartPos);
         }
