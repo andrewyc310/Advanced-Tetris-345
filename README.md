@@ -14,7 +14,7 @@ SFML dependencies
 SFML depends on a few external libraries on macOS. Copy the content of extlibs to /Library/Frameworks.
 
 How to run:
-
+Unzip Advanced Tetris.app.zip
 Run the program by simply double click on Advanced Tetris.app
 
 To check that our source code matches our program:
