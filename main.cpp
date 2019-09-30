@@ -8,6 +8,7 @@
 #include <time.h>
 #include <iostream>
 #include <set>
+#include <ResourcePath.hpp>
 
 
 using namespace std;
@@ -284,7 +285,7 @@ void fullLine()
  */
 int adjacentCount(int nValue, int nRow, int nCol, set<int> &sLst, bool bElm = false)
 {
-    t1.loadFromFile("images/ntiles1.png");
+    t1.loadFromFile(resourcePath() + "ntiles1.png");
     
     //top bottom left right
     if (nRow - 1 > -1 && field[nRow - 1][nCol] == nValue)
@@ -414,8 +415,10 @@ void checkElimination()
 bool checkOver()
 {
     bool k = true;
-    for(int i = 0; i < N; i++){
-        if(field[1][i] !=0 ){
+    for(int i = 0; i < N; i++)
+    {
+        if(field[1][i] !=0 )
+        {
             k = false;
             return k;
         }
@@ -449,12 +452,12 @@ void gameplay()
 {
     srand(time(0));
     
-    if (!font.loadFromFile("fonts/sansation.ttf"))
+    if (!font.loadFromFile(resourcePath() + "sansation.ttf"))
     {
         window.setTitle("Font Error");
     }
     
-    t1.loadFromFile("images/ntiles1.png");
+    t1.loadFromFile(resourcePath() + "ntiles1.png");
     
     //define x coordinate of blocks
     int distanceX = 0;
@@ -497,11 +500,11 @@ void gameplay()
     
     /*enemy and player*/
     Texture enemyT;
-    enemyT.loadFromFile("images/enemy.png");
+    enemyT.loadFromFile(resourcePath() + "enemy.png");
     Sprite enemy(enemyT);
     enemy.scale(0.2, 0.2);
     Texture playerT;
-    playerT.loadFromFile("images/player.png");
+    playerT.loadFromFile(resourcePath() + "player.png");
     Sprite player(playerT);
     player.scale(0.2, 0.2);
     enemy.setPosition(enemyStartPos);
@@ -576,20 +579,25 @@ void gameplay()
                     for (int i = 3; i >= 0; i--)
                     {
                         hor = a[i].x;
-                        if (a[i].y > temp_y) {
+                        if (a[i].y > temp_y)
+                        {
                             temp_y = a[i].y;
                         }
                     }
-                    if (field[19][hor] == 0) {
-                        
+                    if (field[19][hor] == 0)
+                    {
                         calc = 18 - temp_y;
                         for (int i = 3; i >= 0; i--)
                         {
                             a[i].y += calc;
                         }
-                    }else {
-                        for (int j = 0; j < 20; j++) {
-                            if (field[j][hor] != 0) {
+                    }
+                    else
+                    {
+                        for (int j = 0; j < 20; j++)
+                        {
+                            if (field[j][hor] != 0)
+                            {
                                 col = j - 2;
                                 break;
                             }
@@ -836,3 +844,4 @@ int main()
     }
     return 0;
 }
+
